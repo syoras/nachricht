@@ -170,7 +170,7 @@
         };
 
         // مكون البطاقة النهائية للتصدير
-        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor }) => {
+        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor, logoImage }) => {
             const config = getThemeConfig(theme);
             const activePrimary = customThemeColor || config.primary;
             const dateStr = getFormattedDate();
@@ -213,9 +213,13 @@
                         {/* Header */}
                         <div className="flex justify-between items-start mb-10">
                             <div className="flex items-center gap-4">
-                                <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shadow-2xl border-2 border-white/10 backdrop-blur-md bg-white/5">
-                                    <span style={{ color: activePrimary }}>24</span>
-                                </div>
+                                {logoImage ? (
+                                    <img src={logoImage} className="w-28 h-28 rounded-2xl object-cover shadow-2xl border-2 border-white/10" alt="Logo" />
+                                ) : (
+                                    <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shadow-2xl border-2 border-white/10 backdrop-blur-md bg-white/5">
+                                        <span style={{ color: activePrimary }}>24</span>
+                                    </div>
+                                )}
                                 <div className="relative -top-4">
                                     <h1 className="text-4xl font-black tracking-wide">{data.platformName || "الليرة 24"}</h1>
                                     <p className="text-xl text-gray-400 font-bold mt-1 tracking-[0.2em] uppercase">News Platform</p>
@@ -280,11 +284,23 @@
             const [bgOpacity, setBgOpacity] = useState(0.2);
             const [titleColor, setTitleColor] = useState('#ffffff');
             const [customThemeColor, setCustomThemeColor] = useState(null);
+            const [logoImage, setLogoImage] = useState(null);
             const [loading, setLoading] = useState(false);
 
             // استخلاص إعدادات الثيم الحالي للعرض
             const currentThemeConfig = getThemeConfig(theme);
             const activePrimary = customThemeColor || currentThemeConfig.primary;
+
+            const handleLogoUpload = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setLogoImage(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
 
             const handleImageUpload = (e) => {
                 const file = e.target.files[0];
@@ -434,9 +450,24 @@
                                 </div>
                             </div>
 
-                            {/* Platform Name Input */}
+                            {/* Platform Name and Logo */}
                             <div className="mb-6">
-                                <label className="block text-xs font-bold text-gray-400 mb-2">اسم المنصة</label>
+                                <div className="flex justify-between items-end mb-2">
+                                    <label className="block text-xs font-bold text-gray-400">اسم المنصة والشعار</label>
+                                    <div className="relative">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleLogoUpload}
+                                            className="hidden"
+                                            id="logo-upload"
+                                        />
+                                        <label htmlFor="logo-upload" className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg cursor-pointer transition-all border border-slate-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                            <span className="text-[10px] text-gray-300 font-bold">{logoImage ? 'تغيير الشعار' : 'رفع شعار'}</span>
+                                        </label>
+                                    </div>
+                                </div>
                                 <input
                                     type="text"
                                     value={newsData.platformName}
@@ -527,7 +558,11 @@
 
                                 <div className="relative z-10 p-8 flex flex-col h-full overflow-y-auto">
                                     <div className="flex justify-between items-start mb-4">
-                                        <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center font-bold">24</div>
+                                        {logoImage ? (
+                                            <img src={logoImage} className="w-14 h-14 rounded-lg object-cover shadow-md border border-white/10" alt="Logo" />
+                                        ) : (
+                                            <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center font-bold">24</div>
+                                        )}
                                         <div className="text-[10px] bg-white/10 px-2 py-1 rounded-full font-sans">{getFormattedDate()}</div>
                                     </div>
 
@@ -547,7 +582,7 @@
                         </div>
                     </div>
                     {/* 3. Hidden Export Card */}
-                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={titleColor} customThemeColor={customThemeColor} />
+                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={titleColor} customThemeColor={customThemeColor} logoImage={logoImage} />
                 </div>
             );
         };
