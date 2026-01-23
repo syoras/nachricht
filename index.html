@@ -221,8 +221,7 @@
                                     </div>
                                 )}
                                 <div className="relative -top-4">
-                                    <h1 className="text-4xl font-black tracking-wide">{data.platformName || "الليرة 24"}</h1>
-                                    <p className="text-xl text-gray-400 font-bold mt-1 tracking-[0.2em] uppercase">News Platform</p>
+                                    <h1 className="text-4xl font-black tracking-wide">{data.platformName}</h1>
                                 </div>
                             </div>
                             <div className="bg-white/10 backdrop-blur-md border border-white/10 px-8 py-3 rounded-full flex items-center justify-center">
@@ -281,16 +280,17 @@
             });
             const [theme, setTheme] = useState('general');
             const [bgImage, setBgImage] = useState(null);
-            const [bgOpacity, setBgOpacity] = useState(0.2);
-            const [titleColor, setTitleColor] = useState('#ffffff');
+            const [bgOpacity, setBgOpacity] = useState(0.3);
+            const [titleColor, setTitleColor] = useState('');
             const [customThemeColor, setCustomThemeColor] = useState(null);
             const [logoImage, setLogoImage] = useState(null);
-            const [logoSize, setLogoSize] = useState(112); // Default size equivalent to w-28
+            const [logoSize, setLogoSize] = useState(150); // Default size set to 150px
             const [loading, setLoading] = useState(false);
 
             // استخلاص إعدادات الثيم الحالي للعرض
             const currentThemeConfig = getThemeConfig(theme);
             const activePrimary = customThemeColor || currentThemeConfig.primary;
+            const effectiveTitleColor = titleColor || activePrimary;
 
             const handleLogoUpload = (e) => {
                 const file = e.target.files[0];
@@ -515,11 +515,14 @@
                                         <span className="text-[10px] text-gray-400 font-bold">لون الخط</span>
                                         <input
                                             type="color"
-                                            value={titleColor}
+                                            value={effectiveTitleColor}
                                             onChange={(e) => setTitleColor(e.target.value)}
                                             className="w-6 h-6 rounded bg-transparent border-none cursor-pointer"
                                             title="اختر لون العنوان"
                                         />
+                                        {titleColor && (
+                                            <button onClick={() => setTitleColor('')} className="text-[10px] text-red-400 hover:text-red-300">استعادة</button>
+                                        )}
                                     </div>
                                 </div>
                                 <input
@@ -587,7 +590,7 @@
                                         <span className="text-xs font-bold mb-2" style={{ color: activePrimary }}>
                                             {currentThemeConfig.badge}
                                         </span>
-                                        <h3 className="text-2xl font-black mb-4 leading-tight" style={{ color: titleColor }}>
+                                        <h3 className="text-2xl font-black mb-4 leading-tight" style={{ color: effectiveTitleColor }}>
                                             {newsData.title || "العنوان..."}
                                         </h3>
                                         <p className="text-sm text-gray-300 leading-relaxed text-justify opacity-80">
@@ -599,7 +602,7 @@
                         </div>
                     </div>
                     {/* 3. Hidden Export Card */}
-                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={titleColor} customThemeColor={customThemeColor} logoImage={logoImage} logoSize={logoSize} />
+                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={effectiveTitleColor} customThemeColor={customThemeColor} logoImage={logoImage} logoSize={logoSize} />
                 </div>
             );
         };
