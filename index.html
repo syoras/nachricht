@@ -185,13 +185,13 @@
                                 <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shadow-2xl border-2 border-white/10 backdrop-blur-md bg-white/5">
                                     <span style={{ color: config.primary }}>24</span>
                                 </div>
-                                <div>
+                                <div className="relative -top-2">
                                     <h1 className="text-4xl font-black tracking-wide">{data.platformName || "الليرة 24"}</h1>
                                     <p className="text-xl text-gray-400 font-bold mt-1 tracking-[0.2em] uppercase">News Platform</p>
                                 </div>
                             </div>
                             <div className="bg-white/10 backdrop-blur-md border border-white/10 px-8 py-3 rounded-full flex items-center justify-center">
-                                <span className="text-3xl font-bold font-sans tracking-wider relative -top-1.5">{dateStr}</span>
+                                <span className="text-3xl font-bold font-sans tracking-wider relative -top-3">{dateStr}</span>
                             </div>
                         </div>
 
@@ -203,7 +203,7 @@
                                 <div className="text-white w-8 h-8 flex items-center justify-center bg-white/20 rounded-full">
                                     {config.iconSvg}
                                 </div>
-                                <span className="text-3xl font-bold relative -top-1.5" style={{ color: config.primary }}>{config.badge}</span>
+                                <span className="text-3xl font-bold relative -top-3" style={{ color: config.primary }}>{config.badge}</span>
                             </div>
 
                             {/* Title */}
@@ -226,7 +226,7 @@
                                     {/* Telegram Icon SVG */}
                                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.509 1.793.997 3.592 1.48 5.388.16.69.506 1.014 1.152.718.523-.242 1.054-.504 1.585-.765a20.25 20.25 0 0 1 2.296-1.045l3.879 2.923c.896.657 1.832.327 2.115-.818.847-3.995 1.704-8.037 2.548-12.036a2.52 2.52 0 0 0-.951-2.868z"></path></svg>
                                 </div>
-                                <span className="text-2xl font-bold font-sans tracking-wide">t.me/Lairas24</span>
+                                <span className="text-2xl font-bold font-sans tracking-wide">{data.telegramLink || "t.me/Lairas24"}</span>
                             </div>
 
                             {/* Empty space or another element if needed, removed "Designed by..." */}
@@ -238,7 +238,12 @@
         };
 
         const App = () => {
-            const [newsData, setNewsData] = useState({ title: '', body: '', platformName: 'الليرة 24' });
+            const [newsData, setNewsData] = useState({
+                title: '',
+                body: '',
+                platformName: 'الليرة 24',
+                telegramLink: 't.me/Lairas24'
+            });
             const [theme, setTheme] = useState('general');
             const [loading, setLoading] = useState(false);
 
@@ -327,6 +332,19 @@
                                     onChange={(e) => setNewsData({ ...newsData, platformName: e.target.value })}
                                     placeholder="الليرة 24"
                                     className="w-full input-glass rounded-xl p-4 text-lg font-bold text-white outline-none placeholder-gray-500"
+                                />
+                            </div>
+
+                            {/* Telegram Link Input */}
+                            <div className="mb-6">
+                                <label className="block text-xs font-bold text-gray-400 mb-2">رابط تلغرام</label>
+                                <input
+                                    type="text"
+                                    value={newsData.telegramLink}
+                                    onChange={(e) => setNewsData({ ...newsData, telegramLink: e.target.value })}
+                                    placeholder="t.me/Lairas24"
+                                    className="w-full input-glass rounded-xl p-4 text-lg font-bold text-white outline-none placeholder-gray-500 font-sans"
+                                    dir="ltr"
                                 />
                             </div>
 
