@@ -170,7 +170,7 @@
         };
 
         // مكون البطاقة النهائية للتصدير
-        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor, logoImage }) => {
+        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor, logoImage, logoSize }) => {
             const config = getThemeConfig(theme);
             const activePrimary = customThemeColor || config.primary;
             const dateStr = getFormattedDate();
@@ -214,7 +214,7 @@
                         <div className="flex justify-between items-start mb-10">
                             <div className="flex items-center gap-4">
                                 {logoImage ? (
-                                    <img src={logoImage} className="w-28 h-28 rounded-2xl object-cover shadow-2xl border-2 border-white/10" alt="Logo" />
+                                    <img src={logoImage} style={{ width: `${logoSize}px`, height: `${logoSize}px` }} className="rounded-2xl object-cover shadow-2xl border-2 border-white/10" alt="Logo" />
                                 ) : (
                                     <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shadow-2xl border-2 border-white/10 backdrop-blur-md bg-white/5">
                                         <span style={{ color: activePrimary }}>24</span>
@@ -285,6 +285,7 @@
             const [titleColor, setTitleColor] = useState('#ffffff');
             const [customThemeColor, setCustomThemeColor] = useState(null);
             const [logoImage, setLogoImage] = useState(null);
+            const [logoSize, setLogoSize] = useState(112); // Default size equivalent to w-28
             const [loading, setLoading] = useState(false);
 
             // استخلاص إعدادات الثيم الحالي للعرض
@@ -468,6 +469,22 @@
                                         </label>
                                     </div>
                                 </div>
+                                {logoImage && (
+                                    <div className="mb-2 flex flex-col gap-2 bg-slate-800/50 p-3 rounded-xl border border-slate-700/50">
+                                        <div className="flex justify-between text-xs font-bold text-gray-400">
+                                            <span>حجم الشعار</span>
+                                            <span>{logoSize}px</span>
+                                        </div>
+                                        <input
+                                            type="range"
+                                            min="50"
+                                            max="200"
+                                            value={logoSize}
+                                            onChange={(e) => setLogoSize(parseInt(e.target.value))}
+                                            className="w-full accent-blue-500 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                                        />
+                                    </div>
+                                )}
                                 <input
                                     type="text"
                                     value={newsData.platformName}
@@ -559,7 +576,7 @@
                                 <div className="relative z-10 p-8 flex flex-col h-full overflow-y-auto">
                                     <div className="flex justify-between items-start mb-4">
                                         {logoImage ? (
-                                            <img src={logoImage} className="w-14 h-14 rounded-lg object-cover shadow-md border border-white/10" alt="Logo" />
+                                            <img src={logoImage} style={{ width: `${logoSize * 0.5}px`, height: `${logoSize * 0.5}px` }} className="rounded-lg object-cover shadow-md border border-white/10" alt="Logo" />
                                         ) : (
                                             <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center font-bold">24</div>
                                         )}
@@ -582,7 +599,7 @@
                         </div>
                     </div>
                     {/* 3. Hidden Export Card */}
-                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={titleColor} customThemeColor={customThemeColor} logoImage={logoImage} />
+                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={titleColor} customThemeColor={customThemeColor} logoImage={logoImage} logoSize={logoSize} />
                 </div>
             );
         };
