@@ -255,6 +255,7 @@
 
                         {/* Footer - Telegram */}
                         <div className="mt-auto pt-10 border-t border-white/10 flex justify-between items-center">
+                            <div className="w-10"></div>
                             <div className="flex items-center gap-4 bg-white/5 px-6 py-3 rounded-full border border-white/5">
                                 <div className="w-12 h-12 rounded-full bg-[#0088cc] text-white flex items-center justify-center">
                                     {/* Telegram Icon SVG */}
@@ -262,9 +263,6 @@
                                 </div>
                                 <span className="text-2xl font-bold font-sans tracking-wide relative -top-3">{data.telegramLink || "t.me/Lairas24"}</span>
                             </div>
-
-                            {/* Empty space or another element if needed, removed "Designed by..." */}
-                            <div className="w-10"></div>
                         </div>
                     </div>
                 </div>
@@ -284,7 +282,7 @@
             const [titleColor, setTitleColor] = useState('');
             const [customThemeColor, setCustomThemeColor] = useState(null);
             const [logoImage, setLogoImage] = useState(null);
-            const [logoSize, setLogoSize] = useState(150); // Default size set to 150px
+            const [logoSize, setLogoSize] = useState(125); // Default size set to 125px
             const [loading, setLoading] = useState(false);
 
             // استخلاص إعدادات الثيم الحالي للعرض
