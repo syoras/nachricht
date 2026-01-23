@@ -133,43 +133,62 @@
             return `${day}.${month}.${year}`;
         };
 
+        // تعريف إعدادات القوالب (مشترك بين المعاينة والتصدير)
+        const getThemeConfig = (theme) => {
+            switch (theme) {
+                case 'urgent': return {
+                    primary: '#ef4444',
+                    bgGradient: 'from-red-900/40 to-slate-900',
+                    badge: 'عاجل',
+                    iconSvg: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                };
+                case 'economy': return {
+                    primary: '#2ed06e',
+                    bgGradient: 'from-green-900/40 to-slate-900',
+                    badge: 'اقتصاد',
+                    iconSvg: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                };
+                case 'special': return {
+                    primary: '#a855f7',
+                    bgGradient: 'from-purple-900/40 to-slate-900',
+                    badge: 'مميز',
+                    iconSvg: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                };
+                case 'highlight': return {
+                    primary: '#eab308',
+                    bgGradient: 'from-yellow-900/40 to-slate-900',
+                    badge: 'إضاءة',
+                    iconSvg: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                };
+                default: return {
+                    primary: '#3b82f6',
+                    bgGradient: 'from-blue-900/40 to-slate-900',
+                    badge: 'خبر عام',
+                    iconSvg: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                };
+            }
+        };
+
         // مكون البطاقة النهائية للتصدير
-        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity }) => {
-
-            // تحديد الألوان والأيقونات (SVG مباشر لتجنب الانهيار)
-            const getThemeConfig = () => {
-                switch (theme) {
-                    case 'urgent': return {
-                        primary: '#ef4444',
-                        bgGradient: 'from-red-900/40 to-slate-900',
-                        badge: 'عاجل',
-                        // SVG أيقونة تنبيه
-                        iconSvg: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                    };
-                    case 'economy': return {
-                        primary: '#2ed06e',
-                        bgGradient: 'from-green-900/40 to-slate-900',
-                        badge: 'اقتصاد',
-                        // SVG أيقونة صعود
-                        iconSvg: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                    };
-                    default: return {
-                        primary: '#3b82f6',
-                        bgGradient: 'from-blue-900/40 to-slate-900',
-                        badge: 'خبر عام',
-                        // SVG أيقونة مستند
-                        iconSvg: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                    };
-                }
-            };
-
-            const config = getThemeConfig();
+        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor }) => {
+            const config = getThemeConfig(theme);
+            const activePrimary = customThemeColor || config.primary;
             const dateStr = getFormattedDate();
+
+            // حساب التدرج اللوني في حال وجود لون مخصص
+            // نحتاج لتحويل الهيكس إلى RGB أو استخدامه مباشرة في linear-gradient
+            // هنا سنستخدم حيلة بسيطة للتدرج
+            const gradientStyle = customThemeColor
+                ? { background: `linear-gradient(to bottom right, ${customThemeColor}66, #0f172a)` }
+                : {};
+
+            // في حالة اللون المخصص، لا نستخدم كلاس التدرج الأصلي
+            const gradientClass = customThemeColor ? '' : config.bgGradient;
 
             return (
                 <div id={id} className="export-container bg-[#0f172a] text-white font-['Cairo'] relative overflow-hidden">
                     {/* Background Effects */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${config.bgGradient} opacity-80`}></div>
+                    <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} opacity-80`} style={gradientStyle}></div>
 
                     {/* User Background Image */}
                     {bgImage && (
@@ -183,7 +202,7 @@
                     )}
 
                     <div className="absolute top-[-200px] left-[-200px] w-[800px] h-[800px] bg-white/5 rounded-full blur-[150px]"></div>
-                    <div className="absolute bottom-[-100px] right-[-100px] w-[600px] h-[600px] rounded-full blur-[120px]" style={{ background: config.primary, opacity: 0.2 }}></div>
+                    <div className="absolute bottom-[-100px] right-[-100px] w-[600px] h-[600px] rounded-full blur-[120px]" style={{ background: activePrimary, opacity: 0.2 }}></div>
 
                     {/* Texture */}
                     <div className="absolute inset-0 opacity-20" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E")` }}></div>
@@ -195,7 +214,7 @@
                         <div className="flex justify-between items-start mb-10">
                             <div className="flex items-center gap-4">
                                 <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shadow-2xl border-2 border-white/10 backdrop-blur-md bg-white/5">
-                                    <span style={{ color: config.primary }}>24</span>
+                                    <span style={{ color: activePrimary }}>24</span>
                                 </div>
                                 <div className="relative -top-4">
                                     <h1 className="text-4xl font-black tracking-wide">{data.platformName || "الليرة 24"}</h1>
@@ -211,19 +230,19 @@
                         <div className="flex-1 flex flex-col justify-center my-10">
                             {/* Badge */}
                             <div className="self-start flex items-center gap-3 px-6 py-3 rounded-xl mb-8 border border-white/10 backdrop-blur-xl shadow-lg"
-                                style={{ background: `${config.primary}20` }}>
+                                style={{ background: `${activePrimary}20` }}>
                                 <div className="text-white w-8 h-8 flex items-center justify-center bg-white/20 rounded-full">
                                     {config.iconSvg}
                                 </div>
-                                <span className="text-3xl font-bold relative -top-5" style={{ color: config.primary }}>{config.badge}</span>
+                                <span className="text-3xl font-bold relative -top-5" style={{ color: activePrimary }}>{config.badge}</span>
                             </div>
 
                             {/* Title */}
-                            <h2 className="text-7xl font-black leading-tight mb-12 drop-shadow-lg" style={{ lineHeight: 1.3 }}>
+                            <h2 className="text-7xl font-black leading-tight mb-12 drop-shadow-lg" style={{ lineHeight: 1.3, color: titleColor }}>
                                 {data.title || "عنوان الخبر..."}
                             </h2>
 
-                            <div className="w-32 h-2 rounded-full mb-10" style={{ background: config.primary }}></div>
+                            <div className="w-32 h-2 rounded-full mb-10" style={{ background: activePrimary }}></div>
 
                             {/* Body Text */}
                             <p className="text-4xl text-gray-200 font-medium leading-loose text-justify opacity-90" dir="rtl">
@@ -259,7 +278,13 @@
             const [theme, setTheme] = useState('general');
             const [bgImage, setBgImage] = useState(null);
             const [bgOpacity, setBgOpacity] = useState(0.2);
+            const [titleColor, setTitleColor] = useState('#ffffff');
+            const [customThemeColor, setCustomThemeColor] = useState(null);
             const [loading, setLoading] = useState(false);
+
+            // استخلاص إعدادات الثيم الحالي للعرض
+            const currentThemeConfig = getThemeConfig(theme);
+            const activePrimary = customThemeColor || currentThemeConfig.primary;
 
             const handleImageUpload = (e) => {
                 const file = e.target.files[0];
@@ -340,11 +365,33 @@
 
                             {/* Theme Selector */}
                             <div className="mb-6">
-                                <label className="block text-xs font-bold text-gray-400 mb-2">نوع القالب</label>
-                                <div className="grid grid-cols-3 gap-2">
-                                    <button onClick={() => setTheme('general')} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'general' ? 'bg-blue-600 text-white border-blue-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>عام</button>
-                                    <button onClick={() => setTheme('urgent')} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'urgent' ? 'bg-red-600 text-white border-red-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>عاجل 🚨</button>
-                                    <button onClick={() => setTheme('economy')} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'economy' ? 'bg-green-600 text-white border-green-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>اقتصاد 📈</button>
+                                <div className="flex justify-between items-end mb-2">
+                                    <label className="block text-xs font-bold text-gray-400">نوع القالب</label>
+
+                                    {/* Custom Theme Color Picker */}
+                                    <div className="flex items-center gap-2 bg-slate-800 rounded-lg px-2 py-1 border border-slate-700">
+                                        <span className="text-[10px] text-gray-400 font-bold">لون القالب</span>
+                                        <input
+                                            type="color"
+                                            value={activePrimary}
+                                            onChange={(e) => setCustomThemeColor(e.target.value)}
+                                            className="w-6 h-6 rounded bg-transparent border-none cursor-pointer"
+                                            title="تخصيص لون القالب"
+                                        />
+                                        {customThemeColor && (
+                                            <button onClick={() => setCustomThemeColor(null)} className="text-[10px] text-red-400 hover:text-red-300">استعادة</button>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-3 gap-2 mb-2">
+                                    <button onClick={() => { setTheme('general'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'general' ? 'bg-blue-600 text-white border-blue-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>عام</button>
+                                    <button onClick={() => { setTheme('urgent'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'urgent' ? 'bg-red-600 text-white border-red-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>عاجل 🚨</button>
+                                    <button onClick={() => { setTheme('economy'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'economy' ? 'bg-green-600 text-white border-green-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>اقتصاد 📈</button>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button onClick={() => { setTheme('special'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'special' ? 'bg-purple-600 text-white border-purple-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>مميز ✨</button>
+                                    <button onClick={() => { setTheme('highlight'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'highlight' ? 'bg-yellow-600 text-white border-yellow-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>إضاءة 💡</button>
                                 </div>
                             </div>
 
@@ -414,7 +461,19 @@
 
                             {/* Title Input */}
                             <div className="mb-6">
-                                <label className="block text-xs font-bold text-gray-400 mb-2">العنوان الرئيسي</label>
+                                <div className="flex justify-between items-end mb-2">
+                                    <label className="block text-xs font-bold text-gray-400">العنوان الرئيسي</label>
+                                    <div className="flex items-center gap-2 bg-slate-800 rounded-lg px-2 py-1 border border-slate-700">
+                                        <span className="text-[10px] text-gray-400 font-bold">لون الخط</span>
+                                        <input
+                                            type="color"
+                                            value={titleColor}
+                                            onChange={(e) => setTitleColor(e.target.value)}
+                                            className="w-6 h-6 rounded bg-transparent border-none cursor-pointer"
+                                            title="اختر لون العنوان"
+                                        />
+                                    </div>
+                                </div>
                                 <input
                                     type="text"
                                     value={newsData.title}
@@ -439,10 +498,8 @@
                             <button
                                 onClick={handleDownload}
                                 disabled={loading || !newsData.title}
-                                className={`w-full py-4 rounded-xl font-black text-lg flex items-center justify-center gap-2 transition-all transform active:scale-95 shadow-lg ${theme === 'urgent' ? 'bg-gradient-to-r from-red-600 to-red-700 hover:shadow-red-500/30' :
-                                    theme === 'economy' ? 'bg-gradient-to-r from-green-600 to-green-700 hover:shadow-green-500/30' :
-                                        'bg-gradient-to-r from-blue-600 to-blue-700 hover:shadow-blue-500/30'
-                                    }`}
+                                className="w-full py-4 rounded-xl font-black text-lg flex items-center justify-center gap-2 transition-all transform active:scale-95 shadow-lg text-white"
+                                style={{ background: `linear-gradient(to right, ${activePrimary}, ${activePrimary}dd)` }}
                             >
                                 {loading ? 'جاري المعالجة...' : 'تحميل الصورة (HD)'}
                             </button>
@@ -455,10 +512,8 @@
                             </div>
 
                             <div className="relative w-full aspect-square rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl bg-[#0f172a] group">
-                                <div className={`absolute inset-0 bg-gradient-to-br opacity-80 transition-colors duration-500 ${theme === 'urgent' ? 'from-red-900/40 to-slate-900' :
-                                    theme === 'economy' ? 'from-green-900/40 to-slate-900' :
-                                        'from-blue-900/40 to-slate-900'
-                                    }`}></div>
+                                <div className={`absolute inset-0 bg-gradient-to-br opacity-80 transition-colors duration-500 ${!customThemeColor ? currentThemeConfig.bgGradient : ''}`}
+                                    style={customThemeColor ? { background: `linear-gradient(to bottom right, ${customThemeColor}66, #0f172a)` } : {}}></div>
 
                                 {bgImage && (
                                     <div className="absolute inset-0 bg-cover bg-center grayscale mix-blend-overlay"
@@ -477,11 +532,10 @@
                                     </div>
 
                                     <div className="flex-1 flex flex-col justify-center">
-                                        <span className={`text-xs font-bold mb-2 ${theme === 'urgent' ? 'text-red-400' : theme === 'economy' ? 'text-green-400' : 'text-blue-400'
-                                            }`}>
-                                            {theme === 'urgent' ? '🚨 عاجل' : theme === 'economy' ? '📈 اقتصاد' : '📰 خبر عام'}
+                                        <span className="text-xs font-bold mb-2" style={{ color: activePrimary }}>
+                                            {currentThemeConfig.badge}
                                         </span>
-                                        <h3 className="text-2xl font-black mb-4 leading-tight">
+                                        <h3 className="text-2xl font-black mb-4 leading-tight" style={{ color: titleColor }}>
                                             {newsData.title || "العنوان..."}
                                         </h3>
                                         <p className="text-sm text-gray-300 leading-relaxed text-justify opacity-80">
@@ -493,7 +547,7 @@
                         </div>
                     </div>
                     {/* 3. Hidden Export Card */}
-                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} />
+                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={titleColor} customThemeColor={customThemeColor} />
                 </div>
             );
         };
