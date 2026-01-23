@@ -170,7 +170,7 @@
         };
 
         // مكون البطاقة النهائية للتصدير
-        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor, logoImage, logoSize }) => {
+        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor, logoImage, logoSize, dateOpacity, badgeOpacity, telegramOpacity }) => {
             const config = getThemeConfig(theme);
             const activePrimary = customThemeColor || config.primary;
             const dateStr = getFormattedDate();
@@ -224,7 +224,8 @@
                                     <h1 className="text-4xl font-black tracking-wide">{data.platformName}</h1>
                                 </div>
                             </div>
-                            <div className="bg-white/10 backdrop-blur-md border border-white/10 px-8 py-3 rounded-full flex items-center justify-center">
+                            <div className="backdrop-blur-md border border-white/10 px-8 py-3 rounded-full flex items-center justify-center"
+                                style={{ backgroundColor: `rgba(255, 255, 255, ${dateOpacity})` }}>
                                 <span className="text-3xl font-bold font-sans tracking-wider relative -top-4">{dateStr}</span>
                             </div>
                         </div>
@@ -233,7 +234,7 @@
                         <div className="flex-1 flex flex-col justify-center my-10">
                             {/* Badge */}
                             <div className="self-start flex items-center gap-3 px-6 py-3 rounded-xl mb-8 border border-white/10 backdrop-blur-xl shadow-lg"
-                                style={{ background: `${activePrimary}20` }}>
+                                style={{ background: `${activePrimary}${Math.round(badgeOpacity * 255).toString(16).padStart(2, '0')}` }}>
                                 <div className="text-white w-8 h-8 flex items-center justify-center bg-white/20 rounded-full">
                                     {config.iconSvg}
                                 </div>
@@ -256,7 +257,8 @@
                         {/* Footer - Telegram */}
                         <div className="mt-auto pt-10 border-t border-white/10 flex justify-between items-center">
                             <div className="w-10"></div>
-                            <div className="flex items-center gap-4 bg-white/5 px-6 py-3 rounded-full border border-white/5">
+                            <div className="flex items-center gap-4 px-6 py-3 rounded-full border border-white/5"
+                                style={{ backgroundColor: `rgba(255, 255, 255, ${telegramOpacity})` }}>
                                 <div className="w-12 h-12 rounded-full bg-[#0088cc] text-white flex items-center justify-center">
                                     {/* Telegram Icon SVG */}
                                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.509 1.793.997 3.592 1.48 5.388.16.69.506 1.014 1.152.718.523-.242 1.054-.504 1.585-.765a20.25 20.25 0 0 1 2.296-1.045l3.879 2.923c.896.657 1.832.327 2.115-.818.847-3.995 1.704-8.037 2.548-12.036a2.52 2.52 0 0 0-.951-2.868z"></path></svg>
@@ -283,6 +285,9 @@
             const [customThemeColor, setCustomThemeColor] = useState(null);
             const [logoImage, setLogoImage] = useState(null);
             const [logoSize, setLogoSize] = useState(125); // Default size set to 125px
+            const [dateOpacity, setDateOpacity] = useState(0.10);
+            const [badgeOpacity, setBadgeOpacity] = useState(0.13);
+            const [telegramOpacity, setTelegramOpacity] = useState(0.05);
             const [loading, setLoading] = useState(false);
 
             // استخلاص إعدادات الثيم الحالي للعرض
@@ -505,6 +510,64 @@
                                 />
                             </div>
 
+                            {/* Transparency Controls */}
+                            <div className="mb-6 p-4 rounded-xl bg-slate-800/30 border border-white/5">
+                                <h3 className="text-xs font-bold text-gray-400 mb-4">شفافية العناصر</h3>
+
+                                <div className="space-y-4">
+                                    {/* Date Opacity */}
+                                    <div>
+                                        <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
+                                            <span>أيقونة التاريخ</span>
+                                            <span>{Math.round(dateOpacity * 100)}%</span>
+                                        </div>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="1"
+                                            step="0.05"
+                                            value={dateOpacity}
+                                            onChange={(e) => setDateOpacity(parseFloat(e.target.value))}
+                                            className="w-full accent-blue-500 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                                        />
+                                    </div>
+
+                                    {/* Badge Opacity */}
+                                    <div>
+                                        <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
+                                            <span>أيقونة التصنيف (خبر عام..)</span>
+                                            <span>{Math.round(badgeOpacity * 100)}%</span>
+                                        </div>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="1"
+                                            step="0.05"
+                                            value={badgeOpacity}
+                                            onChange={(e) => setBadgeOpacity(parseFloat(e.target.value))}
+                                            className="w-full accent-blue-500 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                                        />
+                                    </div>
+
+                                    {/* Telegram Opacity */}
+                                    <div>
+                                        <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
+                                            <span>أيقونة التيلغرام</span>
+                                            <span>{Math.round(telegramOpacity * 100)}%</span>
+                                        </div>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="1"
+                                            step="0.05"
+                                            value={telegramOpacity}
+                                            onChange={(e) => setTelegramOpacity(parseFloat(e.target.value))}
+                                            className="w-full accent-blue-500 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Title Input */}
                             <div className="mb-6">
                                 <div className="flex justify-between items-end mb-2">
@@ -581,7 +644,7 @@
                                         ) : (
                                             <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center font-bold">24</div>
                                         )}
-                                        <div className="text-[10px] bg-white/10 px-2 py-1 rounded-full font-sans">{getFormattedDate()}</div>
+                                        <div className="text-[10px] px-2 py-1 rounded-full font-sans" style={{ backgroundColor: `rgba(255, 255, 255, ${dateOpacity})` }}>{getFormattedDate()}</div>
                                     </div>
 
                                     <div className="flex-1 flex flex-col justify-center">
@@ -600,7 +663,7 @@
                         </div>
                     </div>
                     {/* 3. Hidden Export Card */}
-                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={effectiveTitleColor} customThemeColor={customThemeColor} logoImage={logoImage} logoSize={logoSize} />
+                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={effectiveTitleColor} customThemeColor={customThemeColor} logoImage={logoImage} logoSize={logoSize} dateOpacity={dateOpacity} badgeOpacity={badgeOpacity} telegramOpacity={telegramOpacity} />
                 </div>
             );
         };
