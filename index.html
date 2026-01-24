@@ -170,7 +170,7 @@
         };
 
         // مكون البطاقة النهائية للتصدير
-        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor, logoImage, logoSize, dateOpacity, badgeOpacity, telegramOpacity }) => {
+        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor, logoImage, logoSize, dateOpacity, badgeOpacity, telegramOpacity, newsBodyColor, platformNameColor, dateBgColor, dateTextColor, badgeBgColor, badgeTextColor, badgeText, titleFontSize, bodyFontSize }) => {
             const config = getThemeConfig(theme);
             const activePrimary = customThemeColor || config.primary;
             const dateStr = getFormattedDate();
@@ -221,12 +221,12 @@
                                     </div>
                                 )}
                                 <div className="relative -top-4">
-                                    <h1 className="text-4xl font-black tracking-wide">{data.platformName}</h1>
+                                    <h1 className="text-4xl font-black tracking-wide" style={{ color: platformNameColor }}>{data.platformName}</h1>
                                 </div>
                             </div>
                             <div className="backdrop-blur-md border border-white/10 px-8 py-3 rounded-full flex items-center justify-center"
-                                style={{ backgroundColor: `rgba(255, 255, 255, ${dateOpacity})` }}>
-                                <span className="text-3xl font-bold font-sans tracking-wider relative -top-4">{dateStr}</span>
+                                style={{ backgroundColor: `${dateBgColor}${Math.round(dateOpacity * 255).toString(16).padStart(2, '0')}` }}>
+                                <span className="text-3xl font-bold font-sans tracking-wider relative -top-4" style={{ color: dateTextColor }}>{dateStr}</span>
                             </div>
                         </div>
 
@@ -234,22 +234,22 @@
                         <div className="flex-1 flex flex-col justify-center my-10">
                             {/* Badge */}
                             <div className="self-start flex items-center gap-3 px-6 py-3 rounded-xl mb-8 border border-white/10 backdrop-blur-xl shadow-lg"
-                                style={{ background: `${activePrimary}${Math.round(badgeOpacity * 255).toString(16).padStart(2, '0')}` }}>
+                                style={{ background: `${badgeBgColor || activePrimary}${Math.round(badgeOpacity * 255).toString(16).padStart(2, '0')}` }}>
                                 <div className="text-white w-8 h-8 flex items-center justify-center bg-white/20 rounded-full">
                                     {config.iconSvg}
                                 </div>
-                                <span className="text-3xl font-bold relative -top-5" style={{ color: activePrimary }}>{config.badge}</span>
+                                <span className="text-3xl font-bold relative -top-5" style={{ color: badgeTextColor || activePrimary }}>{badgeText || config.badge}</span>
                             </div>
 
                             {/* Title */}
-                            <h2 className="text-7xl font-black leading-tight mb-12 drop-shadow-lg" style={{ lineHeight: 1.3, color: titleColor }}>
+                            <h2 className="font-black leading-tight mb-12 drop-shadow-lg" style={{ lineHeight: 1.3, color: titleColor, fontSize: `${titleFontSize}px` }}>
                                 {data.title || "عنوان الخبر..."}
                             </h2>
 
                             <div className="w-32 h-2 rounded-full mb-10" style={{ background: activePrimary }}></div>
 
                             {/* Body Text */}
-                            <p className="text-4xl text-gray-200 font-medium leading-loose text-justify opacity-90" dir="rtl">
+                            <p className="font-medium leading-loose text-justify opacity-90" dir="rtl" style={{ color: newsBodyColor, fontSize: `${bodyFontSize}px` }}>
                                 {data.body || "نص الخبر..."}
                             </p>
                         </div>
@@ -279,6 +279,7 @@
                 telegramLink: 't.me/Lairas24'
             });
             const [theme, setTheme] = useState('general');
+            const [badgeText, setBadgeText] = useState('خبر عام');
             const [bgImage, setBgImage] = useState(null);
             const [bgOpacity, setBgOpacity] = useState(0.3);
             const [titleColor, setTitleColor] = useState('');
@@ -288,6 +289,19 @@
             const [dateOpacity, setDateOpacity] = useState(0.10);
             const [badgeOpacity, setBadgeOpacity] = useState(0.13);
             const [telegramOpacity, setTelegramOpacity] = useState(0.05);
+
+            // New Color States
+            const [newsBodyColor, setNewsBodyColor] = useState('#e5e7eb');
+            const [platformNameColor, setPlatformNameColor] = useState('#ffffff');
+            const [dateBgColor, setDateBgColor] = useState('#ffffff');
+            const [dateTextColor, setDateTextColor] = useState('#ffffff');
+            const [badgeBgColor, setBadgeBgColor] = useState(null);
+            const [badgeTextColor, setBadgeTextColor] = useState(null);
+
+            // Font Size States
+            const [titleFontSize, setTitleFontSize] = useState(72);
+            const [bodyFontSize, setBodyFontSize] = useState(36);
+
             const [loading, setLoading] = useState(false);
 
             // استخلاص إعدادات الثيم الحالي للعرض
@@ -304,6 +318,12 @@
                     };
                     reader.readAsDataURL(file);
                 }
+            };
+
+            const changeTheme = (newTheme) => {
+                setTheme(newTheme);
+                setCustomThemeColor(null);
+                setBadgeText(getThemeConfig(newTheme).badge);
             };
 
             const handleImageUpload = (e) => {
@@ -405,13 +425,25 @@
                                 </div>
 
                                 <div className="grid grid-cols-3 gap-2 mb-2">
-                                    <button onClick={() => { setTheme('general'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'general' ? 'bg-blue-600 text-white border-blue-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>عام</button>
-                                    <button onClick={() => { setTheme('urgent'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'urgent' ? 'bg-red-600 text-white border-red-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>عاجل 🚨</button>
-                                    <button onClick={() => { setTheme('economy'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'economy' ? 'bg-green-600 text-white border-green-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>اقتصاد 📈</button>
+                                    <button onClick={() => changeTheme('general')} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'general' ? 'bg-blue-600 text-white border-blue-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>عام</button>
+                                    <button onClick={() => changeTheme('urgent')} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'urgent' ? 'bg-red-600 text-white border-red-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>عاجل 🚨</button>
+                                    <button onClick={() => changeTheme('economy')} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'economy' ? 'bg-green-600 text-white border-green-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>اقتصاد 📈</button>
                                 </div>
-                                <div className="grid grid-cols-2 gap-2">
-                                    <button onClick={() => { setTheme('special'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'special' ? 'bg-purple-600 text-white border-purple-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>مميز ✨</button>
-                                    <button onClick={() => { setTheme('highlight'); setCustomThemeColor(null); }} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'highlight' ? 'bg-yellow-600 text-white border-yellow-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>إضاءة 💡</button>
+                                <div className="grid grid-cols-2 gap-2 mb-4">
+                                    <button onClick={() => changeTheme('special')} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'special' ? 'bg-purple-600 text-white border-purple-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>مميز ✨</button>
+                                    <button onClick={() => changeTheme('highlight')} className={`p-3 rounded-xl font-bold text-sm transition-all border ${theme === 'highlight' ? 'bg-yellow-600 text-white border-yellow-400' : 'bg-slate-800 border-slate-700 text-gray-400 hover:bg-slate-700'}`}>إضاءة 💡</button>
+                                </div>
+
+                                {/* Custom Badge Text */}
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-400 mb-2">نص الشارة</label>
+                                    <input
+                                        type="text"
+                                        value={badgeText}
+                                        onChange={(e) => setBadgeText(e.target.value)}
+                                        placeholder="تخصيص نص الشارة..."
+                                        className="w-full input-glass rounded-xl p-3 text-sm font-bold text-white outline-none placeholder-gray-500"
+                                    />
                                 </div>
                             </div>
 
@@ -457,7 +489,16 @@
                             {/* Platform Name and Logo */}
                             <div className="mb-6">
                                 <div className="flex justify-between items-end mb-2">
-                                    <label className="block text-xs font-bold text-gray-400">اسم المنصة والشعار</label>
+                                    <div className="flex items-center gap-2">
+                                        <label className="block text-xs font-bold text-gray-400">اسم المنصة والشعار</label>
+                                        <input
+                                            type="color"
+                                            value={platformNameColor}
+                                            onChange={(e) => setPlatformNameColor(e.target.value)}
+                                            className="w-4 h-4 rounded bg-transparent border-none cursor-pointer"
+                                            title="لون اسم المنصة"
+                                        />
+                                    </div>
                                     <div className="relative">
                                         <input
                                             type="file"
@@ -510,16 +551,26 @@
                                 />
                             </div>
 
-                            {/* Transparency Controls */}
+                            {/* Transparency and Colors Controls */}
                             <div className="mb-6 p-4 rounded-xl bg-slate-800/30 border border-white/5">
-                                <h3 className="text-xs font-bold text-gray-400 mb-4">شفافية العناصر</h3>
+                                <h3 className="text-xs font-bold text-gray-400 mb-4">تخصيص الألوان والشفافية</h3>
 
                                 <div className="space-y-4">
-                                    {/* Date Opacity */}
+                                    {/* Date Settings */}
                                     <div>
-                                        <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
-                                            <span>أيقونة التاريخ</span>
-                                            <span>{Math.round(dateOpacity * 100)}%</span>
+                                        <div className="flex justify-between items-center text-xs font-bold text-gray-400 mb-2">
+                                            <span>بطاقة التاريخ</span>
+                                            <div className="flex gap-2">
+                                                <div className="flex items-center gap-1 bg-slate-800 px-2 py-1 rounded">
+                                                    <span className="text-[10px]">خلفية</span>
+                                                    <input type="color" value={dateBgColor} onChange={(e) => setDateBgColor(e.target.value)} className="w-4 h-4 rounded cursor-pointer" />
+                                                </div>
+                                                <div className="flex items-center gap-1 bg-slate-800 px-2 py-1 rounded">
+                                                    <span className="text-[10px]">نص</span>
+                                                    <input type="color" value={dateTextColor} onChange={(e) => setDateTextColor(e.target.value)} className="w-4 h-4 rounded cursor-pointer" />
+                                                </div>
+                                                <span>{Math.round(dateOpacity * 100)}%</span>
+                                            </div>
                                         </div>
                                         <input
                                             type="range"
@@ -532,11 +583,25 @@
                                         />
                                     </div>
 
-                                    {/* Badge Opacity */}
+                                    {/* Badge Settings */}
                                     <div>
-                                        <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
-                                            <span>أيقونة التصنيف (خبر عام..)</span>
-                                            <span>{Math.round(badgeOpacity * 100)}%</span>
+                                        <div className="flex justify-between items-center text-xs font-bold text-gray-400 mb-2">
+                                            <span>بطاقة القالب (عاجل..)</span>
+                                            <div className="flex gap-2">
+                                                <div className="flex items-center gap-1 bg-slate-800 px-2 py-1 rounded">
+                                                    <span className="text-[10px]">خلفية</span>
+                                                    <input type="color" value={badgeBgColor || activePrimary} onChange={(e) => setBadgeBgColor(e.target.value)} className="w-4 h-4 rounded cursor-pointer" />
+                                                </div>
+                                                <div className="flex items-center gap-1 bg-slate-800 px-2 py-1 rounded">
+                                                    <span className="text-[10px]">نص</span>
+                                                    <input type="color" value={badgeTextColor || activePrimary} onChange={(e) => setBadgeTextColor(e.target.value)} className="w-4 h-4 rounded cursor-pointer" />
+                                                </div>
+                                                {/* Reset Button if customized */}
+                                                {(badgeBgColor || badgeTextColor) && (
+                                                    <button onClick={() => { setBadgeBgColor(null); setBadgeTextColor(null); }} className="text-[10px] text-red-400">استعادة</button>
+                                                )}
+                                                <span>{Math.round(badgeOpacity * 100)}%</span>
+                                            </div>
                                         </div>
                                         <input
                                             type="range"
@@ -573,6 +638,17 @@
                                 <div className="flex justify-between items-end mb-2">
                                     <label className="block text-xs font-bold text-gray-400">العنوان الرئيسي</label>
                                     <div className="flex items-center gap-2 bg-slate-800 rounded-lg px-2 py-1 border border-slate-700">
+                                        <span className="text-[10px] text-gray-400 font-bold">حجم الخط</span>
+                                        <input
+                                            type="number"
+                                            min="20"
+                                            max="150"
+                                            value={titleFontSize}
+                                            onChange={(e) => setTitleFontSize(parseInt(e.target.value))}
+                                            className="w-10 bg-transparent text-white text-[10px] font-bold outline-none text-center"
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-2 bg-slate-800 rounded-lg px-2 py-1 border border-slate-700">
                                         <span className="text-[10px] text-gray-400 font-bold">لون الخط</span>
                                         <input
                                             type="color"
@@ -597,7 +673,30 @@
 
                             {/* Body Input */}
                             <div className="mb-8">
-                                <label className="block text-xs font-bold text-gray-400 mb-2">نص الخبر</label>
+                                <div className="flex justify-between items-end mb-2">
+                                    <label className="block text-xs font-bold text-gray-400">نص الخبر</label>
+                                    <div className="flex items-center gap-2 bg-slate-800 rounded-lg px-2 py-1 border border-slate-700">
+                                        <span className="text-[10px] text-gray-400 font-bold">حجم الخط</span>
+                                        <input
+                                            type="number"
+                                            min="10"
+                                            max="100"
+                                            value={bodyFontSize}
+                                            onChange={(e) => setBodyFontSize(parseInt(e.target.value))}
+                                            className="w-10 bg-transparent text-white text-[10px] font-bold outline-none text-center"
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-2 bg-slate-800 rounded-lg px-2 py-1 border border-slate-700">
+                                        <span className="text-[10px] text-gray-400 font-bold">لون النص</span>
+                                        <input
+                                            type="color"
+                                            value={newsBodyColor}
+                                            onChange={(e) => setNewsBodyColor(e.target.value)}
+                                            className="w-4 h-4 rounded bg-transparent border-none cursor-pointer"
+                                            title="لون نص الخبر"
+                                        />
+                                    </div>
+                                </div>
                                 <textarea
                                     value={newsData.body}
                                     onChange={(e) => setNewsData({ ...newsData, body: e.target.value })}
@@ -644,17 +743,17 @@
                                         ) : (
                                             <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center font-bold">24</div>
                                         )}
-                                        <div className="text-[10px] px-2 py-1 rounded-full font-sans" style={{ backgroundColor: `rgba(255, 255, 255, ${dateOpacity})` }}>{getFormattedDate()}</div>
+                                        <div className="text-[10px] px-2 py-1 rounded-full font-sans" style={{ backgroundColor: `${dateBgColor}${Math.round(dateOpacity * 255).toString(16).padStart(2, '0')}`, color: dateTextColor }}>{getFormattedDate()}</div>
                                     </div>
 
                                     <div className="flex-1 flex flex-col justify-center">
-                                        <span className="text-xs font-bold mb-2" style={{ color: activePrimary }}>
-                                            {currentThemeConfig.badge}
+                                        <span className="text-xs font-bold mb-2" style={{ color: badgeTextColor || activePrimary }}>
+                                            {badgeText || currentThemeConfig.badge}
                                         </span>
-                                        <h3 className="text-2xl font-black mb-4 leading-tight" style={{ color: effectiveTitleColor }}>
+                                        <h3 className="font-black mb-4 leading-tight" style={{ color: effectiveTitleColor, fontSize: `${titleFontSize * 0.35}px` }}>
                                             {newsData.title || "العنوان..."}
                                         </h3>
-                                        <p className="text-sm text-gray-300 leading-relaxed text-justify opacity-80">
+                                        <p className="leading-relaxed text-justify opacity-80" style={{ color: newsBodyColor, fontSize: `${bodyFontSize * 0.35}px` }}>
                                             {newsData.body || "النص..."}
                                         </p>
                                     </div>
@@ -663,7 +762,29 @@
                         </div>
                     </div>
                     {/* 3. Hidden Export Card */}
-                    <NewsCardExport id="export-card" data={newsData} theme={theme} bgImage={bgImage} bgOpacity={bgOpacity} titleColor={effectiveTitleColor} customThemeColor={customThemeColor} logoImage={logoImage} logoSize={logoSize} dateOpacity={dateOpacity} badgeOpacity={badgeOpacity} telegramOpacity={telegramOpacity} />
+                    <NewsCardExport
+                        id="export-card"
+                        data={newsData}
+                        theme={theme}
+                        bgImage={bgImage}
+                        bgOpacity={bgOpacity}
+                        titleColor={effectiveTitleColor}
+                        customThemeColor={customThemeColor}
+                        logoImage={logoImage}
+                        logoSize={logoSize}
+                        dateOpacity={dateOpacity}
+                        badgeOpacity={badgeOpacity}
+                        telegramOpacity={telegramOpacity}
+                        newsBodyColor={newsBodyColor}
+                        platformNameColor={platformNameColor}
+                        dateBgColor={dateBgColor}
+                        dateTextColor={dateTextColor}
+                        badgeBgColor={badgeBgColor}
+                        badgeTextColor={badgeTextColor}
+                        badgeText={badgeText}
+                        titleFontSize={titleFontSize}
+                        bodyFontSize={bodyFontSize}
+                    />
                 </div>
             );
         };
