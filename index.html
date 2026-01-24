@@ -169,106 +169,256 @@
             }
         };
 
+        const designTemplates = [
+            { id: 'default', name: 'الافتراضي', type: 'classic', style: { background: '#0f172a' } },
+            { id: 'modern_center', name: 'مودرن مركزي', type: 'modern', style: { backgroundImage: 'radial-gradient(circle at center, #1e293b, #0f172a)' } },
+            { id: 'bold_impact', name: 'عريض وجريء', type: 'bold', style: { backgroundImage: 'linear-gradient(135deg, #000000 0%, #1e1b4b 100%)' } },
+            { id: 'elegant_side', name: 'أنيق جانبي', type: 'side', style: { background: '#111827' } },
+
+            // Variations with backgrounds but using the classic layout by default if not specified
+            { id: 'midnight', name: 'ليلي عميق', type: 'classic', style: { backgroundImage: 'linear-gradient(to bottom right, #172554, #0f172a, #000000)' } },
+            { id: 'royal', name: 'ملكي', type: 'classic', style: { backgroundImage: 'linear-gradient(135deg, #2e1065 0%, #0f172a 100%)' } },
+            { id: 'galaxy', name: 'مجرة', type: 'modern', style: { backgroundImage: 'linear-gradient(to right, #24243e, #302b63, #0f172a)' } },
+            { id: 'gold', name: 'فخامة ذهبية', type: 'bold', style: { backgroundImage: 'linear-gradient(to bottom right, #422006, #713f12, #0f172a)' } },
+        ];
+
         // مكون البطاقة النهائية للتصدير
-        const NewsCardExport = ({ id, data, theme, bgImage, bgOpacity, titleColor, customThemeColor, logoImage, logoSize, dateOpacity, badgeOpacity, telegramOpacity, newsBodyColor, platformNameColor, dateBgColor, dateTextColor, badgeBgColor, badgeTextColor, badgeText, titleFontSize, bodyFontSize }) => {
+        const NewsCardExport = ({ id, data, theme, bgPattern, bgImage, bgOpacity, titleColor, customThemeColor, logoImage, logoSize, dateOpacity, badgeOpacity, websiteOpacity, newsBodyColor, platformNameColor, dateBgColor, dateTextColor, badgeBgColor, badgeTextColor, badgeText, titleFontSize, bodyFontSize }) => {
             const config = getThemeConfig(theme);
             const activePrimary = customThemeColor || config.primary;
             const dateStr = getFormattedDate();
 
-            // حساب التدرج اللوني في حال وجود لون مخصص
-            // نحتاج لتحويل الهيكس إلى RGB أو استخدامه مباشرة في linear-gradient
-            // هنا سنستخدم حيلة بسيطة للتدرج
+            const activeTemplate = designTemplates.find(p => p.id === bgPattern) || designTemplates[0];
+            const layoutType = activeTemplate.type;
+
             const gradientStyle = customThemeColor
                 ? { background: `linear-gradient(to bottom right, ${customThemeColor}66, #0f172a)` }
                 : {};
-
-            // في حالة اللون المخصص، لا نستخدم كلاس التدرج الأصلي
             const gradientClass = customThemeColor ? '' : config.bgGradient;
 
-            return (
-                <div id={id} className="export-container bg-[#0f172a] text-white font-['Cairo'] relative overflow-hidden">
-                    {/* Background Effects */}
+            // Common Background Elements
+            const BackgroundLayer = () => (
+                <>
                     <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} opacity-80`} style={gradientStyle}></div>
-
-                    {/* User Background Image */}
                     {bgImage && (
                         <div className="absolute inset-0 bg-cover bg-center grayscale shadow-inner mix-blend-overlay"
-                            style={{
-                                backgroundImage: `url(${bgImage})`,
-                                opacity: bgOpacity,
-                                filter: 'grayscale(100%) contrast(120%)' // تأثير لجعل الخلفية منسجمة
-                            }}>
-                        </div>
+                            style={{ backgroundImage: `url(${bgImage})`, opacity: bgOpacity, filter: 'grayscale(100%) contrast(120%)' }}></div>
                     )}
-
-                    <div className="absolute top-[-200px] left-[-200px] w-[800px] h-[800px] bg-white/5 rounded-full blur-[150px]"></div>
-                    <div className="absolute bottom-[-100px] right-[-100px] w-[600px] h-[600px] rounded-full blur-[120px]" style={{ background: activePrimary, opacity: 0.2 }}></div>
-
-                    {/* Texture */}
                     <div className="absolute inset-0 opacity-20" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E")` }}></div>
+                </>
+            );
 
-                    {/* Content Wrapper */}
-                    <div className="relative z-10 p-16 flex flex-col h-full justify-between">
+            // 1. Classic Layout (The original one)
+            if (layoutType === 'classic') {
+                return (
+                    <div id={id} className="export-container text-white font-['Cairo'] relative overflow-hidden" style={{ ...activeTemplate.style }}>
+                        <BackgroundLayer />
+                        <div className="absolute top-[-200px] left-[-200px] w-[800px] h-[800px] bg-white/5 rounded-full blur-[150px]"></div>
+                        <div className="absolute bottom-[-100px] right-[-100px] w-[600px] h-[600px] rounded-full blur-[120px]" style={{ background: activePrimary, opacity: 0.2 }}></div>
 
-                        {/* Header */}
-                        <div className="flex justify-between items-start mb-10">
-                            <div className="flex items-center gap-4">
-                                {logoImage ? (
-                                    <img src={logoImage} style={{ width: `${logoSize}px`, height: `${logoSize}px` }} className="rounded-2xl object-cover shadow-2xl border-2 border-white/10" alt="Logo" />
-                                ) : (
-                                    <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shadow-2xl border-2 border-white/10 backdrop-blur-md bg-white/5">
-                                        <span style={{ color: activePrimary }}>24</span>
+                        <div className="relative z-10 p-16 flex flex-col h-full justify-between">
+                            <div className="flex justify-between items-start mb-10">
+                                <div className="flex items-center gap-4">
+                                    {logoImage ? (
+                                        <img src={logoImage} style={{ width: `${logoSize}px`, height: `${logoSize}px` }} className="rounded-2xl object-cover shadow-2xl border-2 border-white/10" alt="Logo" />
+                                    ) : (
+                                        <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shadow-2xl border-2 border-white/10 backdrop-blur-md bg-white/5">
+                                            <span style={{ color: activePrimary }}>24</span>
+                                        </div>
+                                    )}
+                                    <div className="relative -top-4">
+                                        <h1 className="text-4xl font-black tracking-wide" style={{ color: platformNameColor }}>{data.platformName}</h1>
                                     </div>
-                                )}
-                                <div className="relative -top-4">
-                                    <h1 className="text-4xl font-black tracking-wide" style={{ color: platformNameColor }}>{data.platformName}</h1>
+                                </div>
+                                <div className="backdrop-blur-md border border-white/10 px-8 py-3 rounded-full flex items-center justify-center"
+                                    style={{ backgroundColor: `${dateBgColor}${Math.round(dateOpacity * 255).toString(16).padStart(2, '0')}` }}>
+                                    <span className="text-3xl font-bold font-sans tracking-wider relative -top-4" style={{ color: dateTextColor }}>{dateStr}</span>
                                 </div>
                             </div>
-                            <div className="backdrop-blur-md border border-white/10 px-8 py-3 rounded-full flex items-center justify-center"
-                                style={{ backgroundColor: `${dateBgColor}${Math.round(dateOpacity * 255).toString(16).padStart(2, '0')}` }}>
-                                <span className="text-3xl font-bold font-sans tracking-wider relative -top-4" style={{ color: dateTextColor }}>{dateStr}</span>
-                            </div>
-                        </div>
 
-                        {/* Main Body */}
-                        <div className="flex-1 flex flex-col justify-center my-10">
-                            {/* Badge */}
-                            <div className="self-start flex items-center gap-3 px-6 py-3 rounded-xl mb-8 border border-white/10 backdrop-blur-xl shadow-lg"
-                                style={{ background: `${badgeBgColor || activePrimary}${Math.round(badgeOpacity * 255).toString(16).padStart(2, '0')}` }}>
-                                <div className="text-white w-8 h-8 flex items-center justify-center bg-white/20 rounded-full">
-                                    {config.iconSvg}
+                            <div className="flex-1 flex flex-col justify-center my-10">
+                                <div className="self-start flex items-center gap-3 px-6 py-3 rounded-xl mb-8 border border-white/10 backdrop-blur-xl shadow-lg"
+                                    style={{ background: `${badgeBgColor || activePrimary}${Math.round(badgeOpacity * 255).toString(16).padStart(2, '0')}` }}>
+                                    <div className="text-white w-8 h-8 flex items-center justify-center bg-white/20 rounded-full">{config.iconSvg}</div>
+                                    <span className="text-3xl font-bold relative -top-5" style={{ color: badgeTextColor || activePrimary }}>{badgeText || config.badge}</span>
                                 </div>
-                                <span className="text-3xl font-bold relative -top-5" style={{ color: badgeTextColor || activePrimary }}>{badgeText || config.badge}</span>
+                                <h2 className="font-black leading-tight mb-12 drop-shadow-lg" style={{ lineHeight: 1.3, color: titleColor, fontSize: `${titleFontSize}px` }}>
+                                    {data.title || "عنوان الخبر..."}
+                                </h2>
+                                <div className="w-32 h-2 rounded-full mb-10" style={{ background: activePrimary }}></div>
+                                <p className="font-medium leading-loose text-justify opacity-90" dir="rtl" style={{ color: newsBodyColor, fontSize: `${bodyFontSize}px` }}>
+                                    {data.body || "نص الخبر..."}
+                                </p>
                             </div>
 
-                            {/* Title */}
-                            <h2 className="font-black leading-tight mb-12 drop-shadow-lg" style={{ lineHeight: 1.3, color: titleColor, fontSize: `${titleFontSize}px` }}>
-                                {data.title || "عنوان الخبر..."}
-                            </h2>
-
-                            <div className="w-32 h-2 rounded-full mb-10" style={{ background: activePrimary }}></div>
-
-                            {/* Body Text */}
-                            <p className="font-medium leading-loose text-justify opacity-90" dir="rtl" style={{ color: newsBodyColor, fontSize: `${bodyFontSize}px` }}>
-                                {data.body || "نص الخبر..."}
-                            </p>
-                        </div>
-
-                        {/* Footer - Telegram */}
-                        <div className="mt-auto pt-10 border-t border-white/10 flex justify-between items-center">
-                            <div className="w-10"></div>
-                            <div className="flex items-center gap-4 px-6 py-3 rounded-full border border-white/5"
-                                style={{ backgroundColor: `rgba(255, 255, 255, ${telegramOpacity})` }}>
-                                <div className="w-12 h-12 rounded-full bg-[#0088cc] text-white flex items-center justify-center">
-                                    {/* Telegram Icon SVG */}
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.509 1.793.997 3.592 1.48 5.388.16.69.506 1.014 1.152.718.523-.242 1.054-.504 1.585-.765a20.25 20.25 0 0 1 2.296-1.045l3.879 2.923c.896.657 1.832.327 2.115-.818.847-3.995 1.704-8.037 2.548-12.036a2.52 2.52 0 0 0-.951-2.868z"></path></svg>
+                            <div className="mt-auto pt-10 border-t border-white/10 flex justify-between items-center">
+                                <div className="w-10"></div>
+                                <div className="flex items-center gap-4 px-6 py-3 rounded-full border border-white/5"
+                                    style={{ backgroundColor: `rgba(255, 255, 255, ${websiteOpacity})` }}>
+                                    <div className="w-12 h-12 rounded-full bg-[#3b82f6] text-white flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                    </div>
+                                    <span className="text-2xl font-bold font-sans tracking-wide relative -top-3">{data.websiteLink || "www.lairanews.com"}</span>
                                 </div>
-                                <span className="text-2xl font-bold font-sans tracking-wide relative -top-3">{data.telegramLink || "t.me/Lairas24"}</span>
                             </div>
                         </div>
                     </div>
-                </div>
-            );
+                );
+            }
+
+            // 2. Modern Center Layout
+            if (layoutType === 'modern') {
+                return (
+                    <div id={id} className="export-container text-white font-['Cairo'] relative overflow-hidden flex items-center justify-center text-center" style={{ ...activeTemplate.style }}>
+                        <BackgroundLayer />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+
+                        <div className="relative z-10 w-full px-20 flex flex-col items-center h-full py-20">
+                            {/* Top Logo Area */}
+                            <div className="flex flex-col items-center mb-16">
+                                {logoImage ? (
+                                    <img src={logoImage} style={{ width: `${logoSize}px`, height: `${logoSize}px` }} className="rounded-full shadow-2xl border-4 border-white/20 mb-6" alt="Logo" />
+                                ) : (
+                                    <div className="w-24 h-24 rounded-full flex items-center justify-center text-4xl shadow-2xl border-4 border-white/10 bg-white/10 mb-6">
+                                        <span style={{ color: activePrimary }}>24</span>
+                                    </div>
+                                )}
+                                <h1 className="text-3xl font-bold tracking-widest uppercase opacity-80" style={{ color: platformNameColor }}>{data.platformName}</h1>
+                                <div className="mt-2 text-xl font-sans opacity-60 flex items-center gap-2">
+                                    <span style={{ color: dateTextColor }}>{dateStr}</span>
+                                    <span className="w-1 h-1 rounded-full bg-white/50"></span>
+                                    <span style={{ color: badgeTextColor || activePrimary }}>{badgeText || config.badge}</span>
+                                </div>
+                            </div>
+
+                            {/* Center Content */}
+                            <div className="flex-1 flex flex-col justify-center items-center w-full max-w-4xl">
+                                <h2 className="font-black leading-tight mb-12 drop-shadow-2xl text-center" style={{ lineHeight: 1.2, color: titleColor, fontSize: `${titleFontSize * 1.2}px` }}>
+                                    {data.title || "عنوان الخبر الكبير"}
+                                </h2>
+
+                                <div className="w-24 h-1 rounded-full mb-10" style={{ background: activePrimary }}></div>
+
+                                <p className="font-medium leading-loose text-center opacity-90 text-xl max-w-3xl" dir="rtl" style={{ color: newsBodyColor, fontSize: `${bodyFontSize}px` }}>
+                                    {data.body || "نص الخبر يظهر هنا بشكل مركزي وواضح..."}
+                                </p>
+                            </div>
+
+                            {/* Bottom Footer */}
+                            <div className="mt-auto pt-10 flex items-center gap-3 opacity-80 hover:opacity-100 transition-opacity">
+                                <div className="w-10 h-10 rounded-full bg-[#3b82f6] flex items-center justify-center text-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                </div>
+                                <span className="text-2xl font-bold font-sans tracking-wide relative -top-3">{data.websiteLink}</span>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // 3. Bold Impact Layout
+            if (layoutType === 'bold') {
+                return (
+                    <div id={id} className="export-container text-white font-['Cairo'] relative overflow-hidden" style={{ ...activeTemplate.style }}>
+                        <BackgroundLayer />
+                        {/* Dramatic Lighting */}
+                        <div className="absolute top-0 right-0 w-full h-[600px] bg-gradient-to-b from-black/80 to-transparent z-0"></div>
+                        <div className="absolute bottom-0 left-0 w-full h-[600px] bg-gradient-to-t from-black/90 to-transparent z-0"></div>
+
+                        {/* Giant Stroke/Bar */}
+                        <div className="absolute left-0 top-0 bottom-0 w-8 z-20" style={{ background: activePrimary }}></div>
+
+                        <div className="relative z-10 p-20 flex flex-col h-full justify-between pl-24">
+                            {/* Top Header */}
+                            <div className="flex justify-between items-center w-full border-b border-white/10 pb-8 mb-10">
+                                <div className="flex items-center gap-6">
+                                    <div className="bg-white/10 p-3 rounded-lg">
+                                        {logoImage ? <img src={logoImage} className="w-16 h-16 object-cover rounded" /> : <div className="w-16 h-16 bg-white/20 rounded"></div>}
+                                    </div>
+                                    <h1 className="text-5xl font-black uppercase tracking-tighter" style={{ color: platformNameColor }}>{data.platformName}</h1>
+                                </div>
+                                <div className="text-right">
+                                    <div className="text-3xl font-black font-sans" style={{ color: dateTextColor }}>{dateStr}</div>
+                                    <div className="text-xl font-bold opacity-60" style={{ color: badgeTextColor || activePrimary }}>{badgeText || config.badge}</div>
+                                </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 flex flex-col justify-center">
+                                <h2 className="font-black mb-10 drop-shadow-lg" style={{ lineHeight: 1.1, color: titleColor, fontSize: `${titleFontSize * 1.3}px` }}>
+                                    {data.title || "عنوان ضخم"}
+                                </h2>
+                                <div className="p-8 bg-black/40 border-r-4 border-white/20 backdrop-blur-sm rounded-l-2xl">
+                                    <p className="font-bold leading-loose text-justify text-2xl" dir="rtl" style={{ color: newsBodyColor, fontSize: `${bodyFontSize}px` }}>
+                                        {data.body || "نص الخبر..."}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Footer */}
+                            <div className="mt-12 flex justify-end">
+                                <div className="flex items-center gap-4 bg-white text-black px-8 py-4 rounded-full shadow-2xl">
+                                    <span className="text-2xl font-black font-sans tracking-wide relative -top-3">{data.websiteLink}</span>
+                                    <div className="w-10 h-10 bg-[#3b82f6] rounded-full flex items-center justify-center text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            // 4. Elegant Side Layout
+            if (layoutType === 'side') {
+                return (
+                    <div id={id} className="export-container text-white font-['Cairo'] relative overflow-hidden flex flex-row" style={{ ...activeTemplate.style }}>
+                        <BackgroundLayer />
+
+                        {/* Sidebar (Right) */}
+                        <div className="w-1/3 h-full relative z-10 border-l border-white/10 bg-black/20 flex flex-col items-center justify-between p-12 text-center backdrop-blur-md">
+                            <div className="flex flex-col items-center">
+                                {logoImage ? (
+                                    <img src={logoImage} style={{ width: `${logoSize}px`, height: `${logoSize}px` }} className="rounded-full shadow-2xl border mb-6" alt="Logo" />
+                                ) : (
+                                    <div className="w-24 h-24 rounded-full flex items-center justify-center text-4xl shadow-2xl border bg-white/5 mb-6">24</div>
+                                )}
+                                <h1 className="text-3xl font-bold mb-2" style={{ color: platformNameColor }}>{data.platformName}</h1>
+
+                                <div className="w-10 h-1 bg-white/20 rounded-full my-8"></div>
+
+                                <div className="py-4 px-8 rounded-lg border border-white/10 bg-white/5 mb-6" style={{ borderColor: activePrimary }}>
+                                    <div className="text-white/60 text-sm font-bold mb-1">التاريخ</div>
+                                    <div className="text-2xl font-sans font-bold" style={{ color: dateTextColor }}>{dateStr}</div>
+                                </div>
+                                <div className="py-2 px-6 rounded-full text-xl font-bold border" style={{ borderColor: activePrimary, color: badgeTextColor || activePrimary, background: `${badgeBgColor || activePrimary}20` }}>
+                                    {badgeText || config.badge}
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-2 opacity-70">
+                                <div className="w-10 h-10 rounded-full bg-[#3b82f6] text-white flex items-center justify-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                </div>
+                                <span className="text-xl font-bold font-sans tracking-wide relative -top-2">{data.websiteLink}</span>
+                            </div>
+                        </div>
+
+                        {/* Main Content (Left) */}
+                        <div className="w-2/3 h-full relative z-10 p-16 flex flex-col justify-center">
+                            <h2 className="font-serif font-black leading-tight mb-10 drop-shadow-sm" style={{ lineHeight: 1.3, color: titleColor, fontSize: `${titleFontSize}px` }}>
+                                {data.title}
+                            </h2>
+                            <p className="font-medium leading-loose text-justify text-xl pl-8 border-r-2 border-white/10" dir="rtl" style={{ color: newsBodyColor, fontSize: `${bodyFontSize}px` }}>
+                                {data.body}
+                            </p>
+                        </div>
+                    </div>
+                );
+            }
+
+            // Fallback
+            return null;
         };
 
         const App = () => {
@@ -276,9 +426,10 @@
                 title: '',
                 body: '',
                 platformName: 'الليرة 24',
-                telegramLink: 't.me/Lairas24'
+                websiteLink: 'www.lairanews.com'
             });
             const [theme, setTheme] = useState('general');
+            const [bgPattern, setBgPattern] = useState('default');
             const [badgeText, setBadgeText] = useState('خبر عام');
             const [bgImage, setBgImage] = useState(null);
             const [bgOpacity, setBgOpacity] = useState(0.3);
@@ -288,7 +439,7 @@
             const [logoSize, setLogoSize] = useState(125); // Default size set to 125px
             const [dateOpacity, setDateOpacity] = useState(0.10);
             const [badgeOpacity, setBadgeOpacity] = useState(0.13);
-            const [telegramOpacity, setTelegramOpacity] = useState(0.05);
+            const [websiteOpacity, setWebsiteOpacity] = useState(0.05);
 
             // New Color States
             const [newsBodyColor, setNewsBodyColor] = useState('#e5e7eb');
@@ -447,6 +598,32 @@
                                 </div>
                             </div>
 
+                            <div className="mb-6">
+                                <label className="block text-xs font-bold text-gray-400 mb-2">نوع التصميم (Layout)</label>
+                                <div className="grid grid-cols-4 gap-2">
+                                    {designTemplates.map(pattern => (
+                                        <button
+                                            key={pattern.id}
+                                            onClick={() => setBgPattern(pattern.id)}
+                                            className={`h-16 rounded-lg border-2 transition-all relative overflow-hidden group flex flex-col items-center justify-end p-1 ${bgPattern === pattern.id ? 'border-blue-500 scale-105 shadow-lg shadow-blue-500/20' : 'border-slate-700 hover:border-slate-500'}`}
+                                            title={pattern.name}
+                                        >
+                                            <div className="absolute inset-0 z-0" style={pattern.style}></div>
+
+                                            {/* Mini Preview of Layout Type */}
+                                            <div className="absolute inset-2 z-10 border border-white/20 rounded opacity-50 flex flex-col p-1">
+                                                {pattern.type === 'modern' && <div className="w-full h-1 bg-white/40 mb-1 mx-auto rounded-full"></div>}
+                                                {pattern.type === 'side' && <div className="w-1 h-full bg-white/40 absolute right-1 top-0"></div>}
+                                                <div className="w-2/3 h-1 bg-white/20 mb-1 rounded-full"></div>
+                                                <div className="w-full h-2 bg-white/10 rounded"></div>
+                                            </div>
+
+                                            <span className="relative z-20 text-[8px] font-bold text-white drop-shadow-md bg-black/40 px-1 rounded">{pattern.name}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
                             {/* Background Image Controls */}
                             <div className="mb-6 border-b border-gray-700 pb-6">
                                 <label className="block text-xs font-bold text-gray-400 mb-2">صورة الخلفية</label>
@@ -538,14 +715,14 @@
                                 />
                             </div>
 
-                            {/* Telegram Link Input */}
+                            {/* Website Link Input */}
                             <div className="mb-6">
-                                <label className="block text-xs font-bold text-gray-400 mb-2">رابط تلغرام</label>
+                                <label className="block text-xs font-bold text-gray-400 mb-2">رابط الموقع (يظهر أسفل البطاقة)</label>
                                 <input
                                     type="text"
-                                    value={newsData.telegramLink}
-                                    onChange={(e) => setNewsData({ ...newsData, telegramLink: e.target.value })}
-                                    placeholder="t.me/Lairas24"
+                                    value={newsData.websiteLink}
+                                    onChange={(e) => setNewsData({ ...newsData, websiteLink: e.target.value })}
+                                    placeholder="www.lairanews.com"
                                     className="w-full input-glass rounded-xl p-4 text-lg font-bold text-white outline-none placeholder-gray-500 font-sans"
                                     dir="ltr"
                                 />
@@ -614,19 +791,19 @@
                                         />
                                     </div>
 
-                                    {/* Telegram Opacity */}
+                                    {/* Website Opacity */}
                                     <div>
                                         <div className="flex justify-between text-xs font-bold text-gray-400 mb-1">
-                                            <span>أيقونة التيلغرام</span>
-                                            <span>{Math.round(telegramOpacity * 100)}%</span>
+                                            <span>أيقونة الموقع</span>
+                                            <span>{Math.round(websiteOpacity * 100)}%</span>
                                         </div>
                                         <input
                                             type="range"
                                             min="0"
                                             max="1"
                                             step="0.05"
-                                            value={telegramOpacity}
-                                            onChange={(e) => setTelegramOpacity(parseFloat(e.target.value))}
+                                            value={websiteOpacity}
+                                            onChange={(e) => setWebsiteOpacity(parseFloat(e.target.value))}
                                             className="w-full accent-blue-500 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
                                         />
                                     </div>
@@ -724,7 +901,14 @@
 
                             <div className="relative w-full aspect-square rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl bg-[#0f172a] group">
                                 <div className={`absolute inset-0 bg-gradient-to-br opacity-80 transition-colors duration-500 ${!customThemeColor ? currentThemeConfig.bgGradient : ''}`}
-                                    style={customThemeColor ? { background: `linear-gradient(to bottom right, ${customThemeColor}66, #0f172a)` } : {}}></div>
+                                    style={{
+                                        ...(customThemeColor ? { background: `linear-gradient(to bottom right, ${customThemeColor}66, #0f172a)` } : {}),
+                                    }}></div>
+
+                                {/* Background Pattern for Preview */}
+                                <div className="absolute inset-0 -z-10 transition-all duration-300"
+                                    style={designTemplates.find(p => p.id === bgPattern)?.style || { background: '#0f172a' }}>
+                                </div>
 
                                 {bgImage && (
                                     <div className="absolute inset-0 bg-cover bg-center grayscale mix-blend-overlay"
@@ -766,6 +950,7 @@
                         id="export-card"
                         data={newsData}
                         theme={theme}
+                        bgPattern={bgPattern}
                         bgImage={bgImage}
                         bgOpacity={bgOpacity}
                         titleColor={effectiveTitleColor}
@@ -774,7 +959,7 @@
                         logoSize={logoSize}
                         dateOpacity={dateOpacity}
                         badgeOpacity={badgeOpacity}
-                        telegramOpacity={telegramOpacity}
+                        websiteOpacity={websiteOpacity}
                         newsBodyColor={newsBodyColor}
                         platformNameColor={platformNameColor}
                         dateBgColor={dateBgColor}
