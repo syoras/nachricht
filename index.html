@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صانع البطاقات الإخبارية الشامل - Pro Max</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
+
     <style>
         :root {
             /* متغيرات القالب القديم */
             --primary-bg: #f3f4f6;
-            --card-grad-top: #3e4a21; 
+            --card-grad-top: #3e4a21;
             --card-grad-bot: #232b13;
             --accent-yellow: #ffc107;
             --smoke-height: 70%;
@@ -23,9 +24,29 @@
             --new-green-bg-bot: #021a06;
             --neon-green: #00ff40;
             --pill-bg: rgba(255, 255, 255, 0.15);
+
+            /* متغيرات القالب الثالث (الاحترافي - V3) */
+            --v3-bg-grad: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            --v3-text-main: #ffffff;
+            --v3-text-secondary: rgba(255, 255, 255, 0.9);
+            --v3-accent: #ffd700;
+            --v3-glass: rgba(255, 255, 255, 0.1);
+            --v3-border: 1px solid rgba(255, 255, 255, 0.2);
+
+            /* متغيرات القالب الرابع (الرسمي - V4) */
+            --v4-bg-color: #0b1e3b;
+            /* الأزرق الكحلي العميق */
+            --v4-accent: #ffc107;
+            /* الأصفر الذهبي */
+            --v4-text: #ffffff;
+            --v4-ray-color: rgba(255, 193, 7, 0.15);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Cairo', sans-serif;
@@ -52,30 +73,83 @@
             background: white;
             padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
         }
 
-        .controls h3 { margin: 15px 0 10px 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px; font-size: 16px; }
-        .alert-info { background: #e3f2fd; color: #0d47a1; padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 15px; border: 1px solid #bbdefb; }
+        .controls h3 {
+            margin: 15px 0 10px 0;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            font-size: 16px;
+        }
 
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 700; font-size: 13px; color: #555; }
-        
-        .form-group input[type="text"], .form-group textarea, .form-group select {
+        .alert-info {
+            background: #e3f2fd;
+            color: #0d47a1;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            border: 1px solid #bbdefb;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 6px;
             font-family: 'Cairo', sans-serif;
         }
-        
-        .slider-group { background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 10px; }
-        .slider-row { display: flex; align-items: center; margin-bottom: 5px; }
-        .slider-row label { width: 60px; font-size: 11px; margin-bottom: 0; }
-        .slider-row input[type="range"] { flex-grow: 1; cursor: pointer; }
-        .slider-row input[type="color"] { width: 50px; height: 30px; border: none; cursor: pointer; background: none; }
+
+        .slider-group {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            margin-bottom: 10px;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .slider-row label {
+            width: 60px;
+            font-size: 11px;
+            margin-bottom: 0;
+        }
+
+        .slider-row input[type="range"] {
+            flex-grow: 1;
+            cursor: pointer;
+        }
+
+        .slider-row input[type="color"] {
+            width: 50px;
+            height: 30px;
+            border: none;
+            cursor: pointer;
+            background: none;
+        }
 
         .btn-download {
             width: 100%;
@@ -90,7 +164,10 @@
             margin-top: 15px;
             transition: 0.3s;
         }
-        .btn-download:hover { background-color: #218838; }
+
+        .btn-download:hover {
+            background-color: #218838;
+        }
 
         /* --- منطقة المعاينة --- */
         .preview-area {
@@ -111,51 +188,126 @@
             justify-content: flex-end;
             text-align: center;
             color: white;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .logo-container { position: absolute; top: 25px; left: 25px; z-index: 10; }
-        .logo-img { max-height: 45px; max-width: 110px; object-fit: contain; }
-        
+        .logo-container {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            z-index: 10;
+        }
+
+        .logo-img {
+            max-height: 45px;
+            max-width: 110px;
+            object-fit: contain;
+        }
+
         .date-container {
-            position: absolute; top: 25px; right: 25px; z-index: 10;
-            font-weight: 600; font-size: 14px; color: rgba(255, 255, 255, 0.8);
-            transform-origin: top right; direction: ltr;
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            z-index: 10;
+            font-weight: 600;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            transform-origin: top right;
+            direction: ltr;
         }
 
         .quote-mark {
-            position: absolute; top: 90px; right: 20px;
-            font-size: 160px; line-height: 1; color: var(--accent-yellow);
-            font-family: sans-serif; font-weight: bold; z-index: 1;
+            position: absolute;
+            top: 90px;
+            right: 20px;
+            font-size: 160px;
+            line-height: 1;
+            color: var(--accent-yellow);
+            font-family: sans-serif;
+            font-weight: bold;
+            z-index: 1;
         }
 
         .person-image {
-            position: absolute; bottom: 0; left: 50%;
-            transform: translateX(-50%); width: auto; height: 85%;
-            z-index: 2; pointer-events: none; opacity: 1;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            height: 85%;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 1;
         }
 
         .smoke-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: var(--smoke-height);
-            z-index: 3; pointer-events: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: var(--smoke-height);
+            z-index: 3;
+            pointer-events: none;
             background: linear-gradient(to top, var(--card-grad-bot) 0%, var(--card-grad-bot) var(--smoke-density), transparent 100%);
-            backdrop-filter: blur(var(--smoke-blur)); -webkit-backdrop-filter: blur(var(--smoke-blur));
+            backdrop-filter: blur(var(--smoke-blur));
+            -webkit-backdrop-filter: blur(var(--smoke-blur));
             mask-image: linear-gradient(to top, black 80%, transparent 100%);
             -webkit-mask-image: linear-gradient(to top, black 80%, transparent 100%);
         }
 
-        .text-overlay { position: relative; z-index: 4; padding: 20px 25px 35px 25px; width: 100%; }
-        .role, .name, .quote-text { display: block; transform-origin: center center; }
-        .role { font-size: 13px; color: #e5e7eb; margin-bottom: 5px; }
-        .name { font-size: 24px; font-weight: 900; color: var(--accent-yellow); margin-bottom: 10px; }
-        .quote-text { font-size: 18px; font-weight: 700; line-height: 1.4; text-shadow: 0 2px 5px rgba(0,0,0,0.5); color: white; }
+        .text-overlay {
+            position: relative;
+            z-index: 4;
+            padding: 20px 25px 35px 25px;
+            width: 100%;
+        }
+
+        .role,
+        .name,
+        .quote-text {
+            display: block;
+            transform-origin: center center;
+        }
+
+        .role {
+            font-size: 13px;
+            color: #e5e7eb;
+            margin-bottom: 5px;
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--accent-yellow);
+            margin-bottom: 10px;
+        }
+
+        .quote-text {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            color: white;
+        }
 
         .website-container {
-            position: absolute; bottom: 15px; left: 20px; z-index: 20;
-            display: flex; align-items: center; gap: 6px;
-            color: white; font-size: 14px; font-weight: 600; transform-origin: left bottom;
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            transform-origin: left bottom;
         }
-        .web-icon { width: 18px; height: 18px; }
+
+        .web-icon {
+            width: 18px;
+            height: 18px;
+        }
 
         /* =========================================
            القالب الجديد (الحديث - المتطور)
@@ -166,45 +318,55 @@
             height: 500px;
             background: linear-gradient(170deg, var(--new-green-bg-top) 0%, var(--new-green-bg-bot) 90%);
             overflow: hidden;
-            display: none; 
+            display: none;
             flex-direction: column;
             color: white;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
         /* --- [جديد] حاوية صورة الخلفية للقالب الحديث --- */
         .v2-bg-layer {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1; /* فوق الخلفية المتدرجة وتحت المحتوى */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            /* فوق الخلفية المتدرجة وتحت المحتوى */
             pointer-events: none;
             overflow: hidden;
         }
+
         .v2-bg-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.1; /* قيمة افتراضية */
+            opacity: 0.1;
+            /* قيمة افتراضية */
             transform-origin: center;
             transition: opacity 0.1s, transform 0.1s;
         }
 
         .abstract-circle-1 {
             position: absolute;
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
             border-radius: 50%;
-            top: -50px; left: 20%;
+            top: -50px;
+            left: 20%;
             pointer-events: none;
             z-index: 2;
         }
+
         .abstract-circle-2 {
             position: absolute;
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(0, 255, 64, 0.05) 0%, rgba(0,0,0,0) 70%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 255, 64, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
             border-radius: 50%;
-            bottom: -100px; right: -100px;
+            bottom: -100px;
+            right: -100px;
             pointer-events: none;
             z-index: 2;
         }
@@ -230,7 +392,8 @@
 
         .v2-logo-box {
             background-color: var(--pill-bg);
-            width: 60px; height: 60px;
+            width: 60px;
+            height: 60px;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -238,7 +401,12 @@
             backdrop-filter: blur(5px);
             overflow: hidden;
         }
-        .v2-logo-box img { max-width: 80%; max-height: 80%; object-fit: contain; }
+
+        .v2-logo-box img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
 
         .v2-content-area {
             padding: 0 25px;
@@ -260,7 +428,12 @@
             font-weight: bold;
             margin-bottom: 15px;
         }
-        .v2-urgent-icon { width: 14px; height: 14px; fill: currentColor; }
+
+        .v2-urgent-icon {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
 
         .v2-main-title {
             font-size: 32px;
@@ -272,6 +445,7 @@
             position: relative;
             padding-bottom: 10px;
         }
+
         .v2-main-title::after {
             content: '';
             position: absolute;
@@ -299,6 +473,7 @@
             left: 25px;
             z-index: 10;
         }
+
         .v2-website-pill {
             background-color: var(--pill-bg);
             padding: 8px 18px;
@@ -312,20 +487,269 @@
             backdrop-filter: blur(5px);
         }
 
+        /* =========================================
+           القالب الثالث (الاحترافي - V3) 
+           استنادا للطلب: ألوان مختارة، خطوط عربية واضحة، تصميم متقن
+           ========================================= */
+        #capture-card-v3 {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            background: var(--v3-bg-grad);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .v3-overlay-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 20%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .v3-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px;
+            z-index: 5;
+        }
+
+        .v3-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .v3-logo-img {
+            max-height: 40px;
+            max-width: 100px;
+            object-fit: contain;
+        }
+
+        .v3-logo-text {
+            font-weight: 900;
+            font-size: 18px;
+            color: var(--v3-text-main);
+            letter-spacing: 1px;
+        }
+
+        .v3-date-badge {
+            background: var(--v3-glass);
+            border: var(--v3-border);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 13px;
+            color: var(--v3-text-secondary);
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+        }
+
+        .v3-main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px 30px;
+            text-align: right;
+            z-index: 5;
+        }
+
+        .v3-role-tag {
+            display: inline-block;
+            background: var(--v3-accent);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            align-self: flex-start;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .v3-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--v3-text-main);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .v3-quote-body {
+            font-size: 18px;
+            /* حجم خط ممتاز للقراءة */
+            color: var(--v3-text-secondary);
+            line-height: 1.7;
+            /* تباعد أسطر لعدم تقطيع العربي */
+            font-weight: 500;
+            background: var(--v3-glass);
+            padding: 20px;
+            border-radius: 12px;
+            border: var(--v3-border);
+            backdrop-filter: blur(8px);
+        }
+
+        .v3-footer {
+            padding: 20px 30px;
+            z-index: 5;
+            display: flex;
+            justify-content: flex-end;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .v3-website-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--v3-text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* =========================================
+           القالب الرابع (الرسمي - V4)
+           تقسيم عمودي + خطوط ذهبية
+           ========================================= */
+        #capture-card-v4 {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            background-color: var(--v4-bg-color);
+            display: none;
+            flex-direction: row;
+            /* ترتيب أفقي: صورة يسار - محتوى يمين */
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            direction: ltr;
+            /* لضبط الترتيب (صورة يسار) */
+        }
+
+        /* القسم الأيسر: الصورة */
+        .v4-image-section {
+            width: 40%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .v4-person-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        .v4-logo-overlay {
+            position: absolute;
+            top: 20px;
+            left: 15px;
+            z-index: 10;
+            width: 80px;
+        }
+
+        /* القسم الأيمن: المحتوى */
+        .v4-content-section {
+            width: 60%;
+            height: 100%;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            direction: rtl;
+            /* إعادة الاتجاه للعربية داخل المحتوى */
+            z-index: 5;
+        }
+
+        /* الخطوط الذهبية المائلة (Rays) */
+        .v4-rays {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(-45deg,
+                    transparent,
+                    transparent 10px,
+                    var(--v4-ray-color) 10px,
+                    var(--v4-ray-color) 12px);
+            mask-image: linear-gradient(to bottom, black 0%, transparent 40%, transparent 60%, black 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 40%, transparent 60%, black 100%);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .v4-quote-mark {
+            font-size: 80px;
+            color: var(--v4-accent);
+            font-family: serif;
+            /* خط سيريف لعلامات الاقتباس الكلاسيكية */
+            line-height: 1;
+            margin-bottom: -20px;
+            margin-top: 10px;
+        }
+
+        .v4-quote-text {
+            color: var(--v4-text);
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.6;
+            margin-top: 20px;
+            flex-grow: 1;
+        }
+
+        .v4-footer {
+            margin-top: 20px;
+            border-right: 4px solid var(--v4-accent);
+            /* خط جمالي بجانب الاسم */
+            padding-right: 10px;
+        }
+
+        .v4-name {
+            display: block;
+            color: var(--v4-accent);
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .v4-role {
+            display: block;
+            color: var(--v4-text);
+            font-size: 14px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
     </style>
 </head>
+
 <body>
 
     <h1 style="margin-bottom: 20px; color: #3e4a21;">مصمم البطاقات الإخبارية (Pro Max)</h1>
 
     <div class="main-container">
-        
+
         <div class="controls">
-            <div class="form-group" style="background: #e8f5e9; padding: 10px; border-radius: 8px; border: 1px solid #c8e6c9;">
+            <div class="form-group"
+                style="background: #e8f5e9; padding: 10px; border-radius: 8px; border: 1px solid #c8e6c9;">
                 <label style="color: #2e7d32; font-size: 15px;">اختر تصميم البطاقة</label>
                 <select id="templateSelector" style="border: 2px solid #4caf50; font-weight: bold;">
                     <option value="v1">التصميم الكلاسيكي (صورة شخصية)</option>
                     <option value="v2">التصميم الحديث (تعدد الألوان)</option>
+                    <option value="v3">✨ التصميم الاحترافي (الجديد)</option>
+                    <option value="v4">🌟 التصميم الرسمي (Split Layout)</option>
                 </select>
             </div>
 
@@ -351,9 +775,12 @@
                 <div class="form-group">
                     <label>إعدادات طبقة الدخان</label>
                     <div class="slider-group">
-                        <div class="slider-row"><label>الارتفاع</label><input type="range" id="smokeHeight" min="0" max="100" value="70"></div>
-                        <div class="slider-row"><label>الكثافة</label><input type="range" id="smokeDensity" min="0" max="90" value="30"></div>
-                        <div class="slider-row"><label>الضبابية</label><input type="range" id="smokeBlur" min="0" max="20" value="0"></div>
+                        <div class="slider-row"><label>الارتفاع</label><input type="range" id="smokeHeight" min="0"
+                                max="100" value="70"></div>
+                        <div class="slider-row"><label>الكثافة</label><input type="range" id="smokeDensity" min="0"
+                                max="90" value="30"></div>
+                        <div class="slider-row"><label>الضبابية</label><input type="range" id="smokeBlur" min="0"
+                                max="20" value="0"></div>
                     </div>
                 </div>
             </div>
@@ -371,7 +798,8 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="background: #f0f7ff; padding: 10px; border-radius: 8px; border: 1px dashed #2196f3; margin-top: 15px;">
+                <div class="form-group"
+                    style="background: #f0f7ff; padding: 10px; border-radius: 8px; border: 1px dashed #2196f3; margin-top: 15px;">
                     <label style="color:#0d47a1;">🖼️ خلفية مخصصة (تأثير مدمج)</label>
                     <input type="file" id="v2BgInput" accept="image/*" style="margin-bottom: 5px;">
                     <div class="slider-group" style="background: white; border: none; padding: 5px;">
@@ -387,6 +815,34 @@
                 </div>
             </div>
 
+            <div id="v3-theme-controls" style="display: none;">
+                <h3>🎨 مظهر القالب الاحترافي (V3)</h3>
+                <div class="form-group">
+                    <label>نمط الألوان (تدرجات مختارة)</label>
+                    <select id="v3ThemeSelector">
+                        <option value="purple_blue" selected>البنفسجي الملكي (Purple & Blue)</option>
+                        <option value="orange_red">الغروب الدافئ (Orange & Red)</option>
+                        <option value="cyan_teal">المحيط الهادئ (Cyan & Teal)</option>
+                        <option value="dark_slate">الليل الغامض (Dark Slate)</option>
+                        <option value="emerald">الزمرد الفاخر (Emerald Green)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="v4-theme-controls" style="display: none;">
+                <h3>🎨 مظهر القالب الرسمي (V4)</h3>
+                <div class="form-group">
+                    <label>لون الخلفية</label>
+                    <select id="v4ThemeSelector">
+                        <option value="navy" selected>أزرق كحلي (رسمي)</option>
+                        <option value="dark_red">أحمر داكن (خمري)</option>
+                        <option value="dark_green">أخضر غامق</option>
+                        <option value="black">أسود فاخر</option>
+                        <option value="purple">بنفسجي غامق</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label>تحميل الشعار</label>
                 <input type="file" id="logoInput" accept="image/*">
@@ -398,16 +854,19 @@
             </div>
 
             <h3>2. النصوص والمحتوى</h3>
-            
+
             <div class="form-group">
                 <label id="lbl-role">المنصب / التصنيف</label>
                 <input type="text" id="roleInput" value="المبعوث الأميركي الخاص">
             </div>
             <div class="slider-group v1-only-controls">
                 <div class="slider-row"><label>اللون</label><input type="color" id="roleColor" value="#e5e7eb"></div>
-                <div class="slider-row"><label>أفقي</label><input type="range" id="roleX" min="-100" max="100" value="0"></div>
-                <div class="slider-row"><label>عمودي</label><input type="range" id="roleY" min="-50" max="50" value="0"></div>
-                <div class="slider-row"><label>الحجم</label><input type="range" id="roleScale" min="0.5" max="2" step="0.1" value="1"></div>
+                <div class="slider-row"><label>أفقي</label><input type="range" id="roleX" min="-100" max="100"
+                        value="0"></div>
+                <div class="slider-row"><label>عمودي</label><input type="range" id="roleY" min="-50" max="50" value="0">
+                </div>
+                <div class="slider-row"><label>الحجم</label><input type="range" id="roleScale" min="0.5" max="2"
+                        step="0.1" value="1"></div>
             </div>
 
             <div class="form-group">
@@ -416,9 +875,12 @@
             </div>
             <div class="slider-group v1-only-controls">
                 <div class="slider-row"><label>اللون</label><input type="color" id="nameColor" value="#ffc107"></div>
-                <div class="slider-row"><label>أفقي</label><input type="range" id="nameX" min="-100" max="100" value="0"></div>
-                <div class="slider-row"><label>عمودي</label><input type="range" id="nameY" min="-50" max="50" value="0"></div>
-                <div class="slider-row"><label>الحجم</label><input type="range" id="nameScale" min="0.5" max="2" step="0.1" value="1"></div>
+                <div class="slider-row"><label>أفقي</label><input type="range" id="nameX" min="-100" max="100"
+                        value="0"></div>
+                <div class="slider-row"><label>عمودي</label><input type="range" id="nameY" min="-50" max="50" value="0">
+                </div>
+                <div class="slider-row"><label>الحجم</label><input type="range" id="nameScale" min="0.5" max="2"
+                        step="0.1" value="1"></div>
             </div>
 
             <div class="form-group">
@@ -427,17 +889,24 @@
             </div>
             <div class="slider-group v1-only-controls">
                 <div class="slider-row"><label>اللون</label><input type="color" id="quoteColor" value="#ffffff"></div>
-                <div class="slider-row"><label>أفقي</label><input type="range" id="quoteX" min="-100" max="100" value="0"></div>
-                <div class="slider-row"><label>عمودي</label><input type="range" id="quoteY" min="-50" max="50" value="0"></div>
-                <div class="slider-row"><label>الحجم</label><input type="range" id="quoteScale" min="0.5" max="2" step="0.1" value="1"></div>
+                <div class="slider-row"><label>أفقي</label><input type="range" id="quoteX" min="-100" max="100"
+                        value="0"></div>
+                <div class="slider-row"><label>عمودي</label><input type="range" id="quoteY" min="-50" max="50"
+                        value="0"></div>
+                <div class="slider-row"><label>الحجم</label><input type="range" id="quoteScale" min="0.5" max="2"
+                        step="0.1" value="1"></div>
             </div>
 
             <h3 class="v1-only-controls">3. تحريك الصورة الشخصية</h3>
             <div class="slider-group v1-only-controls">
-                <div class="slider-row"><label>أفقي</label><input type="range" id="posX" min="-150" max="150" value="0"></div>
-                <div class="slider-row"><label>عمودي</label><input type="range" id="posY" min="-100" max="100" value="0"></div>
-                <div class="slider-row"><label>الحجم</label><input type="range" id="scale" min="0.5" max="1.5" step="0.05" value="1"></div>
-                <div class="slider-row"><label>الشفافية</label><input type="range" id="opacity" min="0" max="1" step="0.05" value="1"></div>
+                <div class="slider-row"><label>أفقي</label><input type="range" id="posX" min="-150" max="150" value="0">
+                </div>
+                <div class="slider-row"><label>عمودي</label><input type="range" id="posY" min="-100" max="100"
+                        value="0"></div>
+                <div class="slider-row"><label>الحجم</label><input type="range" id="scale" min="0.5" max="1.5"
+                        step="0.05" value="1"></div>
+                <div class="slider-row"><label>الشفافية</label><input type="range" id="opacity" min="0" max="1"
+                        step="0.05" value="1"></div>
             </div>
 
             <h3>4. رابط الموقع</h3>
@@ -447,11 +916,14 @@
             </div>
             <div class="slider-group v1-only-controls">
                 <div class="slider-row"><label>اللون</label><input type="color" id="websiteColor" value="#ffffff"></div>
-                <div class="slider-row"><label>أفقي</label><input type="range" id="websiteX" min="-50" max="250" value="0"></div>
-                <div class="slider-row"><label>عمودي</label><input type="range" id="websiteY" min="-50" max="50" value="0"></div>
-                <div class="slider-row"><label>الحجم</label><input type="range" id="websiteScale" min="0.5" max="2" step="0.1" value="0.8"></div>
+                <div class="slider-row"><label>أفقي</label><input type="range" id="websiteX" min="-50" max="250"
+                        value="0"></div>
+                <div class="slider-row"><label>عمودي</label><input type="range" id="websiteY" min="-50" max="50"
+                        value="0"></div>
+                <div class="slider-row"><label>الحجم</label><input type="range" id="websiteScale" min="0.5" max="2"
+                        step="0.1" value="0.8"></div>
             </div>
-            
+
             <h3>5. تاريخ الإنشاء</h3>
             <div class="form-group">
                 <label>نص التاريخ</label>
@@ -459,9 +931,12 @@
             </div>
             <div class="slider-group v1-only-controls">
                 <div class="slider-row"><label>اللون</label><input type="color" id="dateColor" value="#dddddd"></div>
-                <div class="slider-row"><label>أفقي</label><input type="range" id="dateX" min="-50" max="50" value="0"></div>
-                <div class="slider-row"><label>عمودي</label><input type="range" id="dateY" min="-50" max="50" value="0"></div>
-                <div class="slider-row"><label>الحجم</label><input type="range" id="dateScale" min="0.5" max="2" step="0.1" value="0.9"></div>
+                <div class="slider-row"><label>أفقي</label><input type="range" id="dateX" min="-50" max="50" value="0">
+                </div>
+                <div class="slider-row"><label>عمودي</label><input type="range" id="dateY" min="-50" max="50" value="0">
+                </div>
+                <div class="slider-row"><label>الحجم</label><input type="range" id="dateScale" min="0.5" max="2"
+                        step="0.1" value="0.9"></div>
             </div>
 
             <button class="btn-download" onclick="downloadCard()">حفظ الصورة (دقة فائقة)</button>
@@ -483,7 +958,10 @@
                     <p class="quote-text" id="quoteDisplay">أكدت في اتصال هاتفي على أهمية وقف إطلاق النار.</p>
                 </div>
                 <div id="websiteDisplay" class="website-container">
-                    <svg class="web-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    <svg class="web-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                    </svg>
                     <span id="websiteTextSpan">www.news-site.com</span>
                 </div>
             </div>
@@ -504,7 +982,10 @@
                 </div>
                 <div class="v2-content-area">
                     <div class="v2-urgent-badge">
-                        <svg class="v2-urgent-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        <svg class="v2-urgent-icon" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                        </svg>
                         <span id="v2RoleDisplay">عاجل</span>
                     </div>
                     <h2 class="v2-main-title" id="v2NameDisplay">السياسة والاقتصاد الوطني</h2>
@@ -512,8 +993,63 @@
                 </div>
                 <div class="v2-footer-area">
                     <div class="v2-website-pill">
-                        <svg class="web-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                        <svg class="web-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
                         <span id="v2WebsiteTextSpan">www.news-site.com</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- القالب الثالث V3 HTML -->
+            <div id="capture-card-v3">
+                <div class="v3-overlay-pattern"></div>
+                <div class="v3-header">
+                    <div class="v3-logo-area">
+                        <img src="" id="v3LogoDisplay" class="v3-logo-img" style="display:none;">
+                        <span id="v3LogoText" class="v3-logo-text">LOGO</span>
+                    </div>
+                    <div class="v3-date-badge" id="v3DateDisplay">27.01.2026</div>
+                </div>
+
+                <div class="v3-main-content">
+                    <div class="v3-role-tag" id="v3RoleDisplay">خبر عاجل</div>
+                    <h2 class="v3-title" id="v3NameDisplay">عنوان الخبر الرئيسي هنا</h2>
+                    <div class="v3-quote-body" id="v3QuoteDisplay">
+                        نص الخبر يظهر هنا بخط واضح وجميل مع تباعد أسطر مريح للقراءة باللغة العربية، مما يضمن تجربة بصرية
+                        ممتازة.
+                    </div>
+                </div>
+
+                <div class="v3-footer">
+                    <div class="v3-website-link">
+                        <svg class="web-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                        <span id="v3WebsiteTextSpan">www.yoursite.com</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- القالب الرابع V4 HTML -->
+            <div id="capture-card-v4">
+                <div class="v4-image-section">
+                    <img src="" id="v4LogoDisplay" class="v4-logo-overlay">
+                    <img src="https://pngimg.com/d/businessman_PNG6572.png" id="v4PersonDisplay" class="v4-person-img">
+                </div>
+                <div class="v4-content-section">
+                    <div class="v4-rays"></div>
+                    <div>
+                        <div class="v4-quote-mark">❞</div>
+                        <div class="v4-quote-text" id="v4QuoteDisplay">
+                            نحن نعيد بناء الدولة ومعالجة الإرث السيئ الذي ورثناه من النظام البائد.
+                        </div>
+                    </div>
+                    <div class="v4-footer">
+                        <span class="v4-name" id="v4NameDisplay">أسعد الشيباني</span>
+                        <span class="v4-role" id="v4RoleDisplay">وزير الخارجية السوري</span>
                     </div>
                 </div>
             </div>
@@ -523,36 +1059,69 @@
     <script>
         // === ثيمات القالب القديم (V1) ===
         const themesV1 = {
-            olive:  { top: '#3e4a21', bot: '#232b13' },
-            green:  { top: '#1b5e20', bot: '#0d3311' },
-            blue:   { top: '#1e3a6e', bot: '#0a193d' },
-            red:    { top: '#8a0a0a', bot: '#4e0505' },
+            olive: { top: '#3e4a21', bot: '#232b13' },
+            green: { top: '#1b5e20', bot: '#0d3311' },
+            blue: { top: '#1e3a6e', bot: '#0a193d' },
+            red: { top: '#8a0a0a', bot: '#4e0505' },
             yellow: { top: '#b28900', bot: '#5f4900' },
-            black:  { top: '#2c2c2c', bot: '#000000' }
+            black: { top: '#2c2c2c', bot: '#000000' }
         };
 
         // === ثيمات القالب الحديث (V2) ===
         const themesV2 = {
-            green:  { top: '#0f5120', bot: '#021a06', accent: '#00ff40' },
-            blue:   { top: '#0a1e3d', bot: '#020a1a', accent: '#33ccff' },
-            red:    { top: '#4a0a0a', bot: '#1a0202', accent: '#ff3333' },
+            green: { top: '#0f5120', bot: '#021a06', accent: '#00ff40' },
+            blue: { top: '#0a1e3d', bot: '#020a1a', accent: '#33ccff' },
+            red: { top: '#4a0a0a', bot: '#1a0202', accent: '#ff3333' },
             yellow: { top: '#423a05', bot: '#141201', accent: '#ffcc00' },
-            black:  { top: '#1a1a1a', bot: '#000000', accent: '#ffffff' }
+            black: { top: '#1a1a1a', bot: '#000000', accent: '#ffffff' }
+        };
+
+        // === ثيمات القالب الثالث (V3) ===
+        const themesV3 = {
+            purple_blue: { grad: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', accent: '#ffd700' },
+            orange_red: { grad: 'linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)', accent: '#ffffff' },
+            cyan_teal: { grad: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', accent: '#000000' },
+            dark_slate: { grad: 'linear-gradient(135deg, #232526 0%, #414345 100%)', accent: '#00d2ff' },
+            emerald: { grad: 'linear-gradient(135deg, #093028 0%, #237a57 100%)', accent: '#a8ff78' }
+        };
+
+        // === ثيمات القالب الرابع (V4) ===
+        const themesV4 = {
+            navy: { bg: '#0b1e3b', accent: '#ffc107', ray: 'rgba(255, 193, 7, 0.15)' },
+            dark_red: { bg: '#2a0d0d', accent: '#ffdddd', ray: 'rgba(255, 255, 255, 0.1)' },
+            dark_green: { bg: '#0d2a15', accent: '#ccffcc', ray: 'rgba(200, 255, 200, 0.15)' },
+            black: { bg: '#000000', accent: '#ffd700', ray: 'rgba(255, 215, 0, 0.2)' },
+            purple: { bg: '#1a0b2e', accent: '#e0b0ff', ray: 'rgba(224, 176, 255, 0.15)' }
         };
 
         // تغيير ألوان V1
-        document.getElementById('colorTheme').addEventListener('change', function() {
+        document.getElementById('colorTheme').addEventListener('change', function () {
             const theme = themesV1[this.value];
             document.documentElement.style.setProperty('--card-grad-top', theme.top);
             document.documentElement.style.setProperty('--card-grad-bot', theme.bot);
         });
 
         // تغيير ألوان V2
-        document.getElementById('v2ThemeSelector').addEventListener('change', function() {
+        document.getElementById('v2ThemeSelector').addEventListener('change', function () {
             const theme = themesV2[this.value];
             document.documentElement.style.setProperty('--new-green-bg-top', theme.top);
             document.documentElement.style.setProperty('--new-green-bg-bot', theme.bot);
             document.documentElement.style.setProperty('--neon-green', theme.accent);
+        });
+
+        // تغيير ألوان V3
+        document.getElementById('v3ThemeSelector').addEventListener('change', function () {
+            const theme = themesV3[this.value];
+            document.documentElement.style.setProperty('--v3-bg-grad', theme.grad);
+            document.documentElement.style.setProperty('--v3-accent', theme.accent);
+        });
+
+        // تغيير ألوان V4
+        document.getElementById('v4ThemeSelector').addEventListener('change', function () {
+            const theme = themesV4[this.value];
+            document.documentElement.style.setProperty('--v4-bg-color', theme.bg);
+            document.documentElement.style.setProperty('--v4-accent', theme.accent);
+            document.documentElement.style.setProperty('--v4-ray-color', theme.ray);
         });
 
         const smokeControls = {
@@ -574,7 +1143,7 @@
             personDisplay.style.transform = `translateX(calc(-50% + ${document.getElementById('posX').value}px)) translateY(${document.getElementById('posY').value * -1}px) scale(${document.getElementById('scale').value})`;
         }
         ['posX', 'posY', 'scale'].forEach(id => document.getElementById(id).addEventListener('input', updateImageTransform));
-        document.getElementById('opacity').addEventListener('input', function() { personDisplay.style.opacity = this.value; });
+        document.getElementById('opacity').addEventListener('input', function () { personDisplay.style.opacity = this.value; });
 
         function updateTextTransform(elementId, xId, yId, scaleId) {
             const el = document.getElementById(elementId);
@@ -592,8 +1161,9 @@
             [cfg.x, cfg.y, cfg.s].forEach(id => document.getElementById(id).addEventListener('input', () => updateTextTransform(cfg.display, cfg.x, cfg.y, cfg.s)));
             document.getElementById(cfg.color).addEventListener('input', (e) => document.getElementById(cfg.display).style.color = e.target.value);
             document.getElementById(cfg.input).addEventListener('input', (e) => {
-                document.getElementById(cfg.display).innerText = e.target.value;
-                syncV2Content(); 
+                const val = e.target.value;
+                document.getElementById(cfg.display).innerText = val;
+                syncAll();
             });
         });
 
@@ -605,17 +1175,20 @@
         document.getElementById('websiteColor').addEventListener('input', (e) => websiteDisplay.style.color = e.target.value);
         document.getElementById('websiteInput').addEventListener('input', (e) => {
             document.getElementById('websiteTextSpan').innerText = e.target.value;
-            syncV2Content();
+            syncAll();
         });
 
-        document.getElementById('personInput').addEventListener('change', function() {
+        document.getElementById('personInput').addEventListener('change', function () {
             const reader = new FileReader();
-            reader.onload = e => personDisplay.src = e.target.result;
+            reader.onload = e => {
+                personDisplay.src = e.target.result;
+                document.getElementById('v4PersonDisplay').src = e.target.result;
+            };
             reader.readAsDataURL(this.files[0]);
         });
 
         // [جديد] كود التعامل مع خلفية V2
-        document.getElementById('v2BgInput').addEventListener('change', function() {
+        document.getElementById('v2BgInput').addEventListener('change', function () {
             const reader = new FileReader();
             const bgImg = document.getElementById('v2BgImage');
             reader.onload = e => {
@@ -629,17 +1202,17 @@
             const opacity = document.getElementById('v2BgOpacity').value;
             const scale = document.getElementById('v2BgScale').value;
             const bgImg = document.getElementById('v2BgImage');
-            
+
             bgImg.style.opacity = opacity;
             bgImg.style.transform = `scale(${scale})`;
         }
-        
+
         ['v2BgOpacity', 'v2BgScale'].forEach(id => {
             document.getElementById(id).addEventListener('input', updateV2BgTransform);
         });
         // ---------------------------------
 
-        document.getElementById('logoInput').addEventListener('change', function() {
+        document.getElementById('logoInput').addEventListener('change', function () {
             const reader = new FileReader();
             reader.onload = e => {
                 document.getElementById('logoDisplay').src = e.target.result;
@@ -648,6 +1221,10 @@
                 document.getElementById('v2LogoDisplay').src = e.target.result;
                 document.getElementById('v2LogoDisplay').style.display = 'block';
                 document.getElementById('v2LogoText').style.display = 'none';
+                document.getElementById('v3LogoDisplay').src = e.target.result;
+                document.getElementById('v3LogoDisplay').style.display = 'block';
+                document.getElementById('v3LogoText').style.display = 'none';
+                document.getElementById('v4LogoDisplay').src = e.target.result; // V4 Logo
             };
             reader.readAsDataURL(this.files[0]);
         });
@@ -658,14 +1235,26 @@
             document.getElementById('dateInput').value = formattedDate;
             document.getElementById('dateDisplay').innerText = formattedDate;
             document.getElementById('v2DateDisplay').innerText = formattedDate;
+            document.getElementById('v3DateDisplay').innerText = formattedDate;
             updateTextTransform('dateDisplay', 'dateX', 'dateY', 'dateScale');
         }
 
         const templateSelector = document.getElementById('templateSelector');
         const cardV1 = document.getElementById('capture-card');
         const cardV2 = document.getElementById('capture-card-v2');
+        const cardV3 = document.getElementById('capture-card-v3');
+        const cardV4 = document.getElementById('capture-card-v4');
+
         const v1OnlyControls = document.querySelectorAll('.v1-only-controls, #v1-theme-controls, #v1-person-upload');
         const v2ThemeControls = document.getElementById('v2-theme-controls');
+        const v3ThemeControls = document.getElementById('v3-theme-controls');
+        const v4ThemeControls = document.getElementById('v4-theme-controls');
+
+        function syncAll() {
+            syncV2Content();
+            syncV3Content();
+            syncV4Content();
+        }
 
         function syncV2Content() {
             document.getElementById('v2RoleDisplay').innerText = document.getElementById('roleInput').value;
@@ -675,32 +1264,92 @@
             document.getElementById('v2DateDisplay').innerText = document.getElementById('dateInput').value;
         }
 
-        templateSelector.addEventListener('change', function() {
+        function syncV3Content() {
+            document.getElementById('v3RoleDisplay').innerText = document.getElementById('roleInput').value;
+            document.getElementById('v3NameDisplay').innerText = document.getElementById('nameInput').value;
+            document.getElementById('v3QuoteDisplay').innerText = document.getElementById('quoteInput').value;
+            document.getElementById('v3WebsiteTextSpan').innerText = document.getElementById('websiteInput').value;
+            document.getElementById('v3DateDisplay').innerText = document.getElementById('dateInput').value;
+        }
+
+        function syncV4Content() {
+            document.getElementById('v4RoleDisplay').innerText = document.getElementById('roleInput').value;
+            document.getElementById('v4NameDisplay').innerText = document.getElementById('nameInput').value;
+            document.getElementById('v4QuoteDisplay').innerText = document.getElementById('quoteInput').value;
+        }
+
+        templateSelector.addEventListener('change', function () {
             if (this.value === 'v1') {
+                const allCards = [cardV1, cardV2, cardV3, cardV4];
+                allCards.forEach(c => { if (c) c.style.display = 'none'; });
                 cardV1.style.display = 'flex';
-                cardV2.style.display = 'none';
+
                 v1OnlyControls.forEach(el => el.style.display = 'block');
                 v2ThemeControls.style.display = 'none';
+                v3ThemeControls.style.display = 'none';
+                v4ThemeControls.style.display = 'none';
+
                 document.getElementById('mappingInfo').innerText = 'حقل "الاسم" = اسم الشخصية. حقل "النص" = الاقتباس.';
                 document.getElementById('lbl-role').innerText = 'المنصب / التصنيف';
                 document.getElementById('lbl-name').innerText = 'الاسم';
-            } else {
-                cardV1.style.display = 'none';
+                document.getElementById('lbl-quote').innerText = 'النص / الخبر';
+            } else if (this.value === 'v2') {
+                const allCards = [cardV1, cardV2, cardV3, cardV4];
+                allCards.forEach(c => { if (c) c.style.display = 'none'; });
                 cardV2.style.display = 'flex';
+
                 v1OnlyControls.forEach(el => el.style.display = 'none');
                 v2ThemeControls.style.display = 'block';
+                v3ThemeControls.style.display = 'none';
+                v4ThemeControls.style.display = 'none';
+
                 document.getElementById('mappingInfo').innerText = 'القالب الحديث: "الاسم" = العنوان الرئيسي الملون. "النص" = متن الخبر. "المنصب" = شارة عاجل.';
                 document.getElementById('lbl-role').innerText = 'نص الشارة (مثل: عاجل)';
                 document.getElementById('lbl-name').innerText = 'العنوان الرئيسي';
                 syncV2Content();
+            } else if (this.value === 'v3') {
+                const allCards = [cardV1, cardV2, cardV3, cardV4];
+                allCards.forEach(c => { if (c) c.style.display = 'none'; });
+                cardV3.style.display = 'flex';
+
+                v1OnlyControls.forEach(el => el.style.display = 'none');
+                v2ThemeControls.style.display = 'none';
+                v3ThemeControls.style.display = 'block';
+                v4ThemeControls.style.display = 'none';
+
+                document.getElementById('mappingInfo').innerText = 'القالب الاحترافي: "المنصب" = التصنيف (تاج). "الاسم" = العنوان الرئيسي. "النص" = المحتوى.';
+                document.getElementById('lbl-role').innerText = 'التصنيف / التاج';
+                document.getElementById('lbl-name').innerText = 'العنوان الرئيسي';
+                document.getElementById('lbl-quote').innerText = 'المحتوى النصي';
+                syncV3Content();
+            } else if (this.value === 'v4') {
+                const allCards = [cardV1, cardV2, cardV3, cardV4];
+                allCards.forEach(c => { if (c) c.style.display = 'none'; });
+                cardV4.style.display = 'flex';
+
+                v1OnlyControls.forEach(el => el.style.display = 'none');
+                v2ThemeControls.style.display = 'none';
+                v3ThemeControls.style.display = 'none';
+                v4ThemeControls.style.display = 'block';
+
+                document.getElementById('v1-person-upload').style.display = 'block';
+                document.getElementById('mappingInfo').innerText = 'القالب الرسمي (V4): "المنصب" = الوصف الوظيفي. "الاسم" = اسم الشخصية. "النص" = الاقتباس.';
+                document.getElementById('lbl-role').innerText = 'المنصب / الوصف';
+                document.getElementById('lbl-name').innerText = 'اسم الشخصية';
+                document.getElementById('lbl-quote').innerText = 'نص الاقتباس';
+                syncV4Content();
             }
         });
 
         function downloadCard() {
-            const activeCardId = templateSelector.value === 'v1' ? 'capture-card' : 'capture-card-v2';
+            let activeCardId = 'capture-card';
+            if (templateSelector.value === 'v2') activeCardId = 'capture-card-v2';
+            if (templateSelector.value === 'v3') activeCardId = 'capture-card-v3';
+            if (templateSelector.value === 'v4') activeCardId = 'capture-card-v4';
+
             const elementToCapture = document.getElementById(activeCardId);
-            html2canvas(elementToCapture, { 
-                scale: 4, 
+            html2canvas(elementToCapture, {
+                scale: 4,
                 useCORS: true,
                 logging: false,
                 backgroundColor: null
@@ -711,13 +1360,14 @@
                 link.click();
             });
         }
-        
+
         // تشغيل أولي
         updateWebsiteTransform();
-        updateSmoke(); 
+        updateSmoke();
         setInitialDate();
-        syncV2Content();
+        syncAll();
 
     </script>
 </body>
+
 </html>
