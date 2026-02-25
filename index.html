@@ -674,8 +674,8 @@
             z-index: 5;
         }
 
-        /* الخطوط الذهبية المائلة (Rays) */
-        .v4-rays {
+        /* الخطوط الذهبية المائلة المشتركة (Rays) */
+        .global-rays {
             position: absolute;
             top: 0;
             left: 0;
@@ -684,8 +684,8 @@
             background: repeating-linear-gradient(-45deg,
                     transparent,
                     transparent 10px,
-                    var(--v4-ray-color) 10px,
-                    var(--v4-ray-color) 12px);
+                    var(--v4-ray-color, rgba(255, 255, 255, 0.1)) 10px,
+                    var(--v4-ray-color, rgba(255, 255, 255, 0.1)) 12px);
             mask-image: linear-gradient(to bottom, black 0%, transparent 40%, transparent 60%, black 100%);
             -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 40%, transparent 60%, black 100%);
             pointer-events: none;
@@ -747,12 +747,22 @@
             <div class="form-group"
                 style="background: #e8f5e9; padding: 10px; border-radius: 8px; border: 1px solid #c8e6c9;">
                 <label style="color: #2e7d32; font-size: 15px;">اختر تصميم البطاقة</label>
-                <select id="templateSelector" style="border: 2px solid #4caf50; font-weight: bold;">
+                <select id="templateSelector"
+                    style="border: 2px solid #4caf50; font-weight: bold; margin-bottom: 12px;">
                     <option value="v1">التصميم الكلاسيكي (صورة شخصية)</option>
                     <option value="v2">التصميم الحديث (تعدد الألوان)</option>
                     <option value="v3">✨ التصميم الاحترافي (الجديد)</option>
                     <option value="v4">🌟 التصميم الرسمي (Split Layout)</option>
                 </select>
+
+                <div
+                    style="display: flex; align-items: center; gap: 8px; border-top: 1px solid #c8e6c9; padding-top: 10px;">
+                    <input type="checkbox" id="toggleGlobalRays" checked
+                        style="width: 16px; height: 16px; cursor: pointer;">
+                    <label for="toggleGlobalRays"
+                        style="color: #1b5e20; font-size: 14px; margin: 0; cursor: pointer; font-weight: bold;">إظهار
+                        الخطوط المائلة في الخلفية</label>
+                </div>
             </div>
 
             <div id="mappingInfo" class="alert-info">
@@ -997,6 +1007,7 @@
 
         <div class="preview-area">
             <div id="capture-card">
+                <div class="global-rays"></div>
                 <div class="logo-container">
                     <img src="" id="logoDisplay" class="logo-img" style="display: none;">
                     <span id="logoText" style="font-weight:900; font-size:22px; color:white;">LOGO</span>
@@ -1020,6 +1031,7 @@
             </div>
 
             <div id="capture-card-v2">
+                <div class="global-rays"></div>
                 <div class="v2-bg-layer">
                     <img id="v2BgImage" class="v2-bg-img" src="" style="display:none;">
                 </div>
@@ -1057,6 +1069,7 @@
 
             <!-- القالب الثالث V3 HTML -->
             <div id="capture-card-v3">
+                <div class="global-rays"></div>
                 <div class="v3-overlay-pattern"></div>
                 <div class="v3-header">
                     <div class="v3-logo-area">
@@ -1093,7 +1106,7 @@
                     <img src="https://pngimg.com/d/businessman_PNG6572.png" id="v4PersonDisplay" class="v4-person-img">
                 </div>
                 <div class="v4-content-section">
-                    <div class="v4-rays"></div>
+                    <div class="global-rays"></div>
                     <div>
                         <div class="v4-quote-mark">❞</div>
                         <div class="v4-quote-text" id="v4QuoteDisplay">
@@ -1467,6 +1480,12 @@
         updateSmoke();
         setInitialDate();
         syncAll();
+
+        // تحكم الخطوط المشتركة
+        document.getElementById('toggleGlobalRays').addEventListener('change', function () {
+            const rays = document.querySelectorAll('.global-rays');
+            rays.forEach(r => r.style.display = this.checked ? 'block' : 'none');
+        });
 
     </script>
 </body>
