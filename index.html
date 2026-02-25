@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صانع البطاقات الإخبارية الشامل - Pro Max</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
 
     <style>
         :root {
@@ -2029,17 +2029,41 @@
             if (templateSelector.value === 'v6') activeCardId = 'capture-card-v6';
 
             const elementToCapture = document.getElementById(activeCardId);
-            html2canvas(elementToCapture, {
-                scale: 4,
-                useCORS: true,
-                logging: false,
-                backgroundColor: null
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `news-card-${templateSelector.value}.png`;
-                link.href = canvas.toDataURL('image/png', 1.0);
-                link.click();
-            });
+            const previewArea = document.querySelector('.preview-area');
+
+            const _btn = document.querySelector('.btn-download');
+            const _btnText = _btn.innerText;
+            _btn.innerText = "جاري التحضير...";
+            _btn.disabled = true;
+
+            // إزالة نسبة التصغير مؤقتاً لتجنب العشوائية وتشوه النصوص في الموبايل
+            const originalTransform = previewArea.style.transform;
+            previewArea.style.transform = 'none';
+            void previewArea.offsetHeight; // إعادة حساب التخطيط فوراً
+
+            htmlToImage.toPng(elementToCapture, {
+                pixelRatio: 4,
+                quality: 1.0,
+                backgroundColor: null,
+                skipFonts: false
+            })
+                .then(function (dataUrl) {
+                    previewArea.style.transform = originalTransform;
+                    const link = document.createElement('a');
+                    link.download = `news-card-${templateSelector.value}.png`;
+                    link.href = dataUrl;
+                    link.click();
+
+                    _btn.innerText = _btnText;
+                    _btn.disabled = false;
+                })
+                .catch(function (error) {
+                    previewArea.style.transform = originalTransform;
+                    console.error('oops, something went wrong!', error);
+                    _btn.innerText = _btnText;
+                    _btn.disabled = false;
+                    alert("حدث خطأ أثناء استخراج الصورة، تأكد من اتصالك بالإنترنت وأعد المحاولة.");
+                });
         }
 
         // تشغيل أولي
