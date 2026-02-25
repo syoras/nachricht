@@ -772,6 +772,52 @@
             font-weight: 400;
             opacity: 0.9;
         }
+
+        /* تنسيقات متجاوبة مع شاشات الجوال */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .main-container {
+                gap: 20px;
+                /* في الشاشات الصغيرة نجعل المعاينة قبل أدوات التحكم للرؤية الأفضل */
+                flex-direction: column-reverse;
+                align-items: center;
+            }
+
+            h1 {
+                font-size: 22px;
+                text-align: center;
+            }
+
+            .controls {
+                max-width: 100%;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .preview-area {
+                transform: scale(0.85);
+                /* تقليل حجم البطاقة لتناسب الشاشة الصغيرة */
+                transform-origin: top center;
+                margin-bottom: -75px;
+                /* إزالة المساحة الإضافية الناتجة عن التصغير */
+            }
+        }
+
+        @media (max-width: 380px) {
+            .preview-area {
+                transform: scale(0.72);
+                /* تصغير أكثر للشاشات الضيقة جدًا */
+                margin-bottom: -140px;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 
