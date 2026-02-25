@@ -420,10 +420,10 @@
             align-items: center;
             gap: 5px;
             background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--neon-green);
+            border: 1px solid var(--v2-badge-color, var(--neon-green));
             padding: 4px 12px;
             border-radius: 6px;
-            color: var(--neon-green);
+            color: var(--v2-badge-color, var(--neon-green));
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 15px;
@@ -438,7 +438,7 @@
         .v2-main-title {
             font-size: 32px;
             font-weight: 900;
-            color: var(--neon-green);
+            color: var(--v2-title-color, var(--neon-green));
             line-height: 1.3;
             margin-bottom: 25px;
             text-align: right;
@@ -453,13 +453,13 @@
             right: 0;
             width: 50px;
             height: 4px;
-            background-color: var(--neon-green);
+            background-color: var(--v2-title-color, var(--neon-green));
             border-radius: 2px;
         }
 
         .v2-body-text {
             font-size: 16px;
-            color: #ffffff;
+            color: var(--v2-quote-color, #ffffff);
             line-height: 1.8;
             font-weight: 500;
             text-align: justify;
@@ -565,7 +565,7 @@
 
         .v3-role-tag {
             display: inline-block;
-            background: var(--v3-accent);
+            background: var(--v3-badge-color, var(--v3-accent));
             color: #000;
             padding: 6px 14px;
             border-radius: 8px;
@@ -579,7 +579,7 @@
         .v3-title {
             font-size: 26px;
             font-weight: 800;
-            color: var(--v3-text-main);
+            color: var(--v3-title-color, var(--v3-text-main));
             margin-bottom: 15px;
             line-height: 1.4;
         }
@@ -587,7 +587,7 @@
         .v3-quote-body {
             font-size: 18px;
             /* حجم خط ممتاز للقراءة */
-            color: var(--v3-text-secondary);
+            color: var(--v3-quote-color, var(--v3-text-secondary));
             line-height: 1.7;
             /* تباعد أسطر لعدم تقطيع العربي */
             font-weight: 500;
@@ -798,6 +798,24 @@
                     </select>
                 </div>
 
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>تخصيص ألوان العناصر</label>
+                    <div class="slider-group">
+                        <div class="slider-row">
+                            <label style="width: 80px;">لون الشارة</label>
+                            <input type="color" id="v2BadgeColor" value="#00ff40">
+                        </div>
+                        <div class="slider-row">
+                            <label style="width: 80px;">لون العنوان</label>
+                            <input type="color" id="v2TitleColor" value="#00ff40">
+                        </div>
+                        <div class="slider-row">
+                            <label style="width: 80px;">لون الخبر</label>
+                            <input type="color" id="v2QuoteColor" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group"
                     style="background: #f0f7ff; padding: 10px; border-radius: 8px; border: 1px dashed #2196f3; margin-top: 15px;">
                     <label style="color:#0d47a1;">🖼️ خلفية مخصصة (تأثير مدمج)</label>
@@ -825,7 +843,26 @@
                         <option value="cyan_teal">المحيط الهادئ (Cyan & Teal)</option>
                         <option value="dark_slate">الليل الغامض (Dark Slate)</option>
                         <option value="emerald">الزمرد الفاخر (Emerald Green)</option>
+                        <option value="dark_red">أحمر داكن (Dark Red)</option>
                     </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>تخصيص ألوان العناصر</label>
+                    <div class="slider-group">
+                        <div class="slider-row">
+                            <label style="width: 80px;">لون الشارة</label>
+                            <input type="color" id="v3BadgeColor" value="#ffd700">
+                        </div>
+                        <div class="slider-row">
+                            <label style="width: 80px;">لون العنوان</label>
+                            <input type="color" id="v3TitleColor" value="#ffffff">
+                        </div>
+                        <div class="slider-row">
+                            <label style="width: 80px;">لون الخبر</label>
+                            <input type="color" id="v3QuoteColor" value="#e6e6e6">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1080,9 +1117,10 @@
         const themesV3 = {
             purple_blue: { grad: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', accent: '#ffd700' },
             orange_red: { grad: 'linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)', accent: '#ffffff' },
-            cyan_teal: { grad: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', accent: '#000000' },
+            cyan_teal: { grad: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', accent: '#ffffff' },
             dark_slate: { grad: 'linear-gradient(135deg, #232526 0%, #414345 100%)', accent: '#00d2ff' },
-            emerald: { grad: 'linear-gradient(135deg, #093028 0%, #237a57 100%)', accent: '#a8ff78' }
+            emerald: { grad: 'linear-gradient(135deg, #093028 0%, #237a57 100%)', accent: '#a8ff78' },
+            dark_red: { grad: 'linear-gradient(135deg, #5c0000 0%, #220000 100%)', accent: '#ffcccc' }
         };
 
         // === ثيمات القالب الرابع (V4) ===
@@ -1107,6 +1145,23 @@
             document.documentElement.style.setProperty('--new-green-bg-top', theme.top);
             document.documentElement.style.setProperty('--new-green-bg-bot', theme.bot);
             document.documentElement.style.setProperty('--neon-green', theme.accent);
+
+            // تحديث الألوان المخصصة لتتطابق مع الثيم الجديد
+            document.getElementById('v2BadgeColor').value = theme.accent;
+            document.getElementById('v2TitleColor').value = theme.accent;
+            document.documentElement.style.setProperty('--v2-badge-color', theme.accent);
+            document.documentElement.style.setProperty('--v2-title-color', theme.accent);
+        });
+
+        // تخصيص الألوان لـ V2
+        document.getElementById('v2BadgeColor').addEventListener('input', function () {
+            document.documentElement.style.setProperty('--v2-badge-color', this.value);
+        });
+        document.getElementById('v2TitleColor').addEventListener('input', function () {
+            document.documentElement.style.setProperty('--v2-title-color', this.value);
+        });
+        document.getElementById('v2QuoteColor').addEventListener('input', function () {
+            document.documentElement.style.setProperty('--v2-quote-color', this.value);
         });
 
         // تغيير ألوان V3
@@ -1114,6 +1169,28 @@
             const theme = themesV3[this.value];
             document.documentElement.style.setProperty('--v3-bg-grad', theme.grad);
             document.documentElement.style.setProperty('--v3-accent', theme.accent);
+
+            // تحديث لون الشارة الافتراضي ليتطابق مع الثيم
+            document.getElementById('v3BadgeColor').value = theme.accent;
+            document.documentElement.style.setProperty('--v3-badge-color', theme.accent);
+
+            // إعادة الألوان الرئيسية والفرعية للحالة الافتراضية للثيم
+            document.getElementById('v3TitleColor').value = '#ffffff';
+            document.getElementById('v3QuoteColor').value = '#e6e6e6';
+            document.documentElement.style.setProperty('--v3-title-color', '#ffffff');
+            document.documentElement.style.setProperty('--v3-quote-color', 'rgba(255, 255, 255, 0.9)');
+        });
+
+        // تخصيص الألوان لـ V3
+        document.getElementById('v3BadgeColor').addEventListener('input', function () {
+            document.documentElement.style.setProperty('--v3-badge-color', this.value);
+        });
+        document.getElementById('v3TitleColor').addEventListener('input', function () {
+            document.documentElement.style.setProperty('--v3-title-color', this.value);
+        });
+        document.getElementById('v3QuoteColor').addEventListener('input', function () {
+            // إضافة شفافية خفيفة مقاربة للوضع الأصلي إذا أمكن أو استخدام اللون المختار كما هو
+            document.documentElement.style.setProperty('--v3-quote-color', this.value);
         });
 
         // تغيير ألوان V4
