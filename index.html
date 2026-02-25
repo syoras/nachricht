@@ -636,7 +636,7 @@
 
         /* القسم الأيسر: الصورة */
         .v4-image-section {
-            width: 40%;
+            width: var(--v4-image-width, 40%);
             height: 100%;
             position: relative;
             overflow: hidden;
@@ -648,6 +648,8 @@
             height: 100%;
             object-fit: cover;
             object-position: top center;
+            transform: scale(var(--v4-image-scale, 1));
+            transform-origin: top center;
         }
 
         .v4-logo-overlay {
@@ -660,7 +662,7 @@
 
         /* القسم الأيمن: المحتوى */
         .v4-content-section {
-            width: 60%;
+            width: calc(100% - var(--v4-image-width, 40%));
             height: 100%;
             padding: 25px 20px;
             display: flex;
@@ -877,6 +879,20 @@
                         <option value="black">أسود فاخر</option>
                         <option value="purple">بنفسجي غامق</option>
                     </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>أبعاد وصورة القالب (V4)</label>
+                    <div class="slider-group">
+                        <div class="slider-row">
+                            <label style="width: 80px;">مساحة الصورة</label>
+                            <input type="range" id="v4ImageWidth" min="20" max="80" value="40">
+                        </div>
+                        <div class="slider-row">
+                            <label style="width: 80px;">تكبير الصورة</label>
+                            <input type="range" id="v4ImageScale" min="0.5" max="3" step="0.1" value="1">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1199,6 +1215,14 @@
             document.documentElement.style.setProperty('--v4-bg-color', theme.bg);
             document.documentElement.style.setProperty('--v4-accent', theme.accent);
             document.documentElement.style.setProperty('--v4-ray-color', theme.ray);
+        });
+
+        // تحكم أبعاد V4
+        document.getElementById('v4ImageWidth').addEventListener('input', function () {
+            document.documentElement.style.setProperty('--v4-image-width', this.value + '%');
+        });
+        document.getElementById('v4ImageScale').addEventListener('input', function () {
+            document.documentElement.style.setProperty('--v4-image-scale', this.value);
         });
 
         const smokeControls = {
