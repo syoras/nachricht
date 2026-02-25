@@ -40,6 +40,23 @@
             /* الأصفر الذهبي */
             --v4-text: #ffffff;
             --v4-ray-color: rgba(255, 193, 7, 0.15);
+
+            /* متغيرات القالب الخامس (الزجاجي المضيء - V5) */
+            --v5-bg-main: linear-gradient(135deg, #1f1c2c, #928dab);
+            --v5-blob-1: #ff007f;
+            --v5-blob-2: #00f2fe;
+            --v5-text: #ffffff;
+            --v5-glass: rgba(255, 255, 255, 0.15);
+            --v5-border: 1px solid rgba(255, 255, 255, 0.3);
+
+            /* متغيرات القالب السادس (القصاصة الورقية - V6) */
+            --v6-bg-col: #f4e8d3;
+            /* لون ورق قديم/دافيء */
+            --v6-paper-bg: #fffcf5;
+            --v6-tape-bg: rgba(255, 255, 255, 0.5);
+            --v6-text-h: #2c3e50;
+            --v6-text-p: #34495e;
+            --v6-accent: #e74c3c;
         }
 
         * {
@@ -112,7 +129,12 @@
 
         @media (max-width: 450px) {
             .template-buttons {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .template-btn {
+                font-size: 12px;
+                padding: 8px 3px;
             }
         }
 
@@ -774,6 +796,272 @@
             opacity: 0.9;
         }
 
+        /* =========================================
+           القالب الخامس (الزجاجي الملون - V5)
+           ========================================= */
+        #capture-card-v5 {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            background: var(--v5-bg-main);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .v5-blob-1,
+        .v5-blob-2 {
+            position: absolute;
+            filter: blur(50px);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .v5-blob-1 {
+            width: 250px;
+            height: 250px;
+            background: var(--v5-blob-1);
+            top: -50px;
+            right: -50px;
+        }
+
+        .v5-blob-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--v5-blob-2);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .v5-glass-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: var(--v5-glass);
+            border: var(--v5-border);
+            border-radius: 20px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            overflow: hidden;
+        }
+
+        .v5-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 2;
+        }
+
+        .v5-logo {
+            max-width: 80px;
+            max-height: 40px;
+        }
+
+        .v5-date {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--v5-text);
+        }
+
+        .v5-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: right;
+            margin-top: 15px;
+            z-index: 2;
+        }
+
+        .v5-badge {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.2);
+            border: var(--v5-border);
+            padding: 5px 14px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--v5-text);
+            margin-bottom: 20px;
+        }
+
+        .v5-title {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--v5-text);
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .v5-quote {
+            font-size: 16px;
+            line-height: 1.7;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .v5-footer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--v5-text);
+            z-index: 2;
+        }
+
+        /* =========================================
+           القالب السادس (القصاصة الورقية - V6)
+           ========================================= */
+        #capture-card-v6 {
+            position: relative;
+            width: 400px;
+            height: 500px;
+            background: var(--v6-bg-col);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .v6-cork-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: radial-gradient(#000 1px, transparent 1px);
+            background-size: 6px 6px;
+            z-index: 0;
+        }
+
+        .v6-paper {
+            position: relative;
+            width: 85%;
+            height: 80%;
+            background: var(--v6-paper-bg);
+            box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            transform: rotate(-1.5deg);
+            border-radius: 2px;
+        }
+
+        /* اللاصق الشفاف (شريط لاصق) */
+        .v6-tape {
+            position: absolute;
+            width: 120px;
+            height: 35px;
+            background: var(--v6-tape-bg);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%) rotate(2deg);
+            z-index: 3;
+            border-left: 2px dashed rgba(255, 255, 255, 0.8);
+            border-right: 2px dashed rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(2px);
+        }
+
+        .v6-tape-2 {
+            position: absolute;
+            width: 70px;
+            height: 25px;
+            background: var(--v6-tape-bg);
+            bottom: -10px;
+            right: -10px;
+            transform: rotate(-45deg);
+            z-index: 3;
+        }
+
+        .v6-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--v6-accent);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .v6-logo {
+            max-width: 70px;
+            max-height: 40px;
+            filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+        }
+
+        .v6-date {
+            font-weight: 900;
+            color: var(--v6-accent);
+            font-size: 14px;
+        }
+
+        .v6-content {
+            flex-grow: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .v6-badge {
+            background: var(--v6-accent);
+            color: white;
+            padding: 4px 12px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            transform: rotate(2deg);
+            box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .v6-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--v6-text-h);
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .v6-quote {
+            font-size: 15px;
+            line-height: 1.6;
+            font-weight: 600;
+            color: var(--v6-text-p);
+            background: rgba(0, 0, 0, 0.03);
+            padding: 10px;
+            border-right: 4px solid var(--v6-accent);
+        }
+
+        .v6-footer {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--v6-text-h);
+        }
+
         /* تنسيقات متجاوبة مع شاشات الجوال */
         @media (max-width: 768px) {
             body {
@@ -839,6 +1127,8 @@
                     <button class="template-btn" data-template="v2">الحديث</button>
                     <button class="template-btn" data-template="v3">✨ الاحترافي</button>
                     <button class="template-btn" data-template="v4">🌟 الرسمي</button>
+                    <button class="template-btn" data-template="v5">💎 الزجاجي</button>
+                    <button class="template-btn" data-template="v6">📌 الملصق الورقي</button>
                 </div>
 
                 <div
@@ -997,6 +1287,35 @@
                             <input type="range" id="v4ImageY" min="-200" max="200" value="0">
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div id="v5-theme-controls" style="display: none;">
+                <h3>🎨 مظهر القالب الزجاجي المضيء (V5)</h3>
+                <div class="form-group">
+                    <label>نمط المجرات (الخلفية والأضواء)</label>
+                    <select id="v5ThemeSelector">
+                        <option value="aurora" selected>أورورا (شفق قطبي سحري)</option>
+                        <option value="sunset">غروب نابض (أورانج وزهري)</option>
+                        <option value="cyber">سايبر بانك (نيون أزرق وبنفسجي)</option>
+                        <option value="deepsea">أعماق المحيط (زمردي وأزرق)</option>
+                        <option value="gold">أسود ملكي وذهبي متوهج</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="v6-theme-controls" style="display: none;">
+                <h3>🎨 مظهر الملصقات (V6)</h3>
+                <div class="form-group">
+                    <label>لون ونمط الورق</label>
+                    <select id="v6ThemeSelector">
+                        <option value="vintage" selected>ورق كلاسيكي (Vintage)</option>
+                        <option value="blueprint">مخطط أزرق (Blueprint)</option>
+                        <option value="darknote">ملاحظة سوداء داكنة</option>
+                        <option value="greenpost">لصاقة ملاحظات خضراء</option>
+                        <option value="pinkpost">لصاقة زهرية لطيفة</option>
+                        <option value="royalgold">ذهبي ملكي فاخر</option>
+                    </select>
                 </div>
             </div>
 
@@ -1214,6 +1533,66 @@
                     </div>
                 </div>
             </div>
+
+            <!-- القالب الخامس V5 HTML -->
+            <div id="capture-card-v5">
+                <div class="v5-blob-1"></div>
+                <div class="v5-blob-2"></div>
+                <div class="v5-glass-panel">
+                    <div class="global-rays"></div>
+                    <div class="v5-header">
+                        <div class="v4-logo-overlay"> <!-- using same wrapping concept to adjust size -->
+                            <img src="" id="v5LogoDisplay" class="v5-logo" style="display:none;">
+                            <span id="v5LogoText" style="font-weight:bold; font-size:18px; color:white;">LOGO</span>
+                        </div>
+                        <div class="v5-date" id="v5DateDisplay">27.01.2026</div>
+                    </div>
+                    <div class="v5-content">
+                        <div class="v5-badge" id="v5RoleDisplay">خبر عاجل</div>
+                        <h2 class="v5-title" id="v5NameDisplay">العنوان الرئيسي</h2>
+                        <p class="v5-quote" id="v5QuoteDisplay">تفاصيل الخبر المكتوبة هنا تظهر بشكل أنيق وجذاب يعكس
+                            احترافية التصميم الزجاجي المتطور.</p>
+                    </div>
+                    <div class="v5-footer">
+                        <svg class="web-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                        <span id="v5WebsiteTextSpan">www.website.com</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- القالب السادس V6 HTML -->
+            <div id="capture-card-v6">
+                <div class="v6-cork-bg"></div>
+                <div class="v6-paper">
+                    <div class="v6-tape"></div>
+                    <div class="v6-tape-2"></div>
+                    <div class="v6-header">
+                        <div class="v4-logo-overlay">
+                            <img src="" id="v6LogoDisplay" class="v6-logo" style="display:none;">
+                            <span id="v6LogoText"
+                                style="font-weight:bold; font-size:18px; color:var(--v6-text-h);">LOGO</span>
+                        </div>
+                        <div class="v6-date" id="v6DateDisplay">27.01.2026</div>
+                    </div>
+                    <div class="v6-content">
+                        <div class="v6-badge" id="v6RoleDisplay">تصريح عاجل</div>
+                        <h2 class="v6-title" id="v6NameDisplay">العنوان الرئيسي للخبر</h2>
+                        <p class="v6-quote" id="v6QuoteDisplay">شكل مختلف ومميز يعتمد على اللصاقات الورقية الشريطية
+                            لإيصال المعلومة بشكل إبداعي ولطيف.</p>
+                    </div>
+                    <div class="v6-footer">
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 16px; height: 16px; opacity: 0.8;">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                        </svg>
+                        <span id="v6WebsiteTextSpan">www.website.com</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -1254,6 +1633,25 @@
             dark_green: { bg: '#0d2a15', accent: '#ccffcc', ray: 'rgba(200, 255, 200, 0.15)' },
             black: { bg: '#000000', accent: '#ffd700', ray: 'rgba(255, 215, 0, 0.2)' },
             purple: { bg: '#1a0b2e', accent: '#e0b0ff', ray: 'rgba(224, 176, 255, 0.15)' }
+        };
+
+        // === ثيمات القالب الخامس (V5) ===
+        const themesV5 = {
+            aurora: { bg: 'linear-gradient(135deg, #1f1c2c, #928dab)', b1: '#ff007f', b2: '#00f2fe' },
+            sunset: { bg: 'linear-gradient(135deg, #ff7e5f, #feb47b)', b1: '#ff0f7b', b2: '#f89b29' },
+            cyber: { bg: 'linear-gradient(135deg, #0f0c29, #302b63)', b1: '#f107a3', b2: '#00ffff' },
+            deepsea: { bg: 'linear-gradient(135deg, #093028, #237a57)', b1: '#00d2ff', b2: '#3a7bd5' },
+            gold: { bg: 'linear-gradient(135deg, #000000, #434343)', b1: '#d4af37', b2: '#f3e5f5' }
+        };
+
+        // === ثيمات القالب السادس (V6) ===
+        const themesV6 = {
+            vintage: { bg: '#f4e8d3', paper: '#fffcf5', accent: '#e74c3c', th: '#2c3e50', tp: '#34495e', tape: 'rgba(255,255,255,0.5)' },
+            blueprint: { bg: '#103e68', paper: '#195B94', accent: '#f1c40f', th: '#ffffff', tp: '#dceaf4', tape: 'rgba(255,255,255,0.2)' },
+            darknote: { bg: '#121212', paper: '#2c2c2c', accent: '#00e676', th: '#ffffff', tp: '#cccccc', tape: 'rgba(255,255,255,0.1)' },
+            greenpost: { bg: '#fffceb', paper: '#c8e6c9', accent: '#2e7d32', th: '#1b5e20', tp: '#2e7d32', tape: 'rgba(255,255,255,0.4)' },
+            pinkpost: { bg: '#fef6f8', paper: '#f8bbd0', accent: '#c2185b', th: '#880e4f', tp: '#ad1457', tape: 'rgba(255,255,255,0.4)' },
+            royalgold: { bg: '#1c1c1c', paper: '#000000', accent: '#d4af37', th: '#f3e5f5', tp: '#cccccc', tape: 'rgba(212, 175, 55, 0.3)' }
         };
 
         // تغيير ألوان V1
@@ -1337,6 +1735,25 @@
         });
         document.getElementById('v4ImageY').addEventListener('input', function () {
             document.documentElement.style.setProperty('--v4-image-y', this.value + 'px');
+        });
+
+        // تغيير ألوان ومظهر V5
+        document.getElementById('v5ThemeSelector').addEventListener('change', function () {
+            const theme = themesV5[this.value];
+            document.documentElement.style.setProperty('--v5-bg-main', theme.bg);
+            document.documentElement.style.setProperty('--v5-blob-1', theme.b1);
+            document.documentElement.style.setProperty('--v5-blob-2', theme.b2);
+        });
+
+        // تغيير ألوان ومظهر V6
+        document.getElementById('v6ThemeSelector').addEventListener('change', function () {
+            const theme = themesV6[this.value];
+            document.documentElement.style.setProperty('--v6-bg-col', theme.bg);
+            document.documentElement.style.setProperty('--v6-paper-bg', theme.paper);
+            document.documentElement.style.setProperty('--v6-accent', theme.accent);
+            document.documentElement.style.setProperty('--v6-text-h', theme.th);
+            document.documentElement.style.setProperty('--v6-text-p', theme.tp);
+            document.documentElement.style.setProperty('--v6-tape-bg', theme.tape);
         });
 
         const smokeControls = {
@@ -1440,6 +1857,12 @@
                 document.getElementById('v3LogoDisplay').style.display = 'block';
                 document.getElementById('v3LogoText').style.display = 'none';
                 document.getElementById('v4LogoDisplay').src = e.target.result; // V4 Logo
+                document.getElementById('v5LogoDisplay').src = e.target.result;
+                document.getElementById('v5LogoDisplay').style.display = 'block';
+                document.getElementById('v5LogoText').style.display = 'none';
+                document.getElementById('v6LogoDisplay').src = e.target.result;
+                document.getElementById('v6LogoDisplay').style.display = 'block';
+                document.getElementById('v6LogoText').style.display = 'none';
             };
             reader.readAsDataURL(this.files[0]);
         });
@@ -1451,6 +1874,8 @@
             document.getElementById('dateDisplay').innerText = formattedDate;
             document.getElementById('v2DateDisplay').innerText = formattedDate;
             document.getElementById('v3DateDisplay').innerText = formattedDate;
+            document.getElementById('v5DateDisplay').innerText = formattedDate;
+            document.getElementById('v6DateDisplay').innerText = formattedDate;
             updateTextTransform('dateDisplay', 'dateX', 'dateY', 'dateScale');
         }
 
@@ -1459,16 +1884,22 @@
         const cardV2 = document.getElementById('capture-card-v2');
         const cardV3 = document.getElementById('capture-card-v3');
         const cardV4 = document.getElementById('capture-card-v4');
+        const cardV5 = document.getElementById('capture-card-v5');
+        const cardV6 = document.getElementById('capture-card-v6');
 
         const v1OnlyControls = document.querySelectorAll('.v1-only-controls, #v1-theme-controls, #v1-person-upload');
         const v2ThemeControls = document.getElementById('v2-theme-controls');
         const v3ThemeControls = document.getElementById('v3-theme-controls');
         const v4ThemeControls = document.getElementById('v4-theme-controls');
+        const v5ThemeControls = document.getElementById('v5-theme-controls');
+        const v6ThemeControls = document.getElementById('v6-theme-controls');
 
         function syncAll() {
             syncV2Content();
             syncV3Content();
             syncV4Content();
+            syncV5Content();
+            syncV6Content();
         }
 
         function syncV2Content() {
@@ -1493,6 +1924,22 @@
             document.getElementById('v4QuoteDisplay').innerText = document.getElementById('quoteInput').value;
         }
 
+        function syncV5Content() {
+            document.getElementById('v5RoleDisplay').innerText = document.getElementById('roleInput').value;
+            document.getElementById('v5NameDisplay').innerText = document.getElementById('nameInput').value;
+            document.getElementById('v5QuoteDisplay').innerText = document.getElementById('quoteInput').value;
+            document.getElementById('v5WebsiteTextSpan').innerText = document.getElementById('websiteInput').value;
+            document.getElementById('v5DateDisplay').innerText = document.getElementById('dateInput').value;
+        }
+
+        function syncV6Content() {
+            document.getElementById('v6RoleDisplay').innerText = document.getElementById('roleInput').value;
+            document.getElementById('v6NameDisplay').innerText = document.getElementById('nameInput').value;
+            document.getElementById('v6QuoteDisplay').innerText = document.getElementById('quoteInput').value;
+            document.getElementById('v6WebsiteTextSpan').innerText = document.getElementById('websiteInput').value;
+            document.getElementById('v6DateDisplay').innerText = document.getElementById('dateInput').value;
+        }
+
         const templateBtns = document.querySelectorAll('.template-btn');
         templateBtns.forEach(btn => {
             btn.addEventListener('click', function () {
@@ -1507,43 +1954,35 @@
         });
 
         templateSelector.addEventListener('change', function () {
-            if (this.value === 'v1') {
-                const allCards = [cardV1, cardV2, cardV3, cardV4];
-                allCards.forEach(c => { if (c) c.style.display = 'none'; });
-                cardV1.style.display = 'flex';
+            const allCards = [cardV1, cardV2, cardV3, cardV4, cardV5, cardV6];
+            allCards.forEach(c => { if (c) c.style.display = 'none'; });
 
+            v1OnlyControls.forEach(el => el.style.display = 'none');
+            v2ThemeControls.style.display = 'none';
+            v3ThemeControls.style.display = 'none';
+            v4ThemeControls.style.display = 'none';
+            v5ThemeControls.style.display = 'none';
+            v6ThemeControls.style.display = 'none';
+
+            if (this.value === 'v1') {
+                cardV1.style.display = 'flex';
                 v1OnlyControls.forEach(el => el.style.display = 'block');
-                v2ThemeControls.style.display = 'none';
-                v3ThemeControls.style.display = 'none';
-                v4ThemeControls.style.display = 'none';
 
                 document.getElementById('mappingInfo').innerText = 'حقل "الاسم" = اسم الشخصية. حقل "النص" = الاقتباس.';
                 document.getElementById('lbl-role').innerText = 'المنصب / التصنيف';
                 document.getElementById('lbl-name').innerText = 'الاسم';
                 document.getElementById('lbl-quote').innerText = 'النص / الخبر';
             } else if (this.value === 'v2') {
-                const allCards = [cardV1, cardV2, cardV3, cardV4];
-                allCards.forEach(c => { if (c) c.style.display = 'none'; });
                 cardV2.style.display = 'flex';
-
-                v1OnlyControls.forEach(el => el.style.display = 'none');
                 v2ThemeControls.style.display = 'block';
-                v3ThemeControls.style.display = 'none';
-                v4ThemeControls.style.display = 'none';
 
                 document.getElementById('mappingInfo').innerText = 'القالب الحديث: "الاسم" = العنوان الرئيسي الملون. "النص" = متن الخبر. "المنصب" = شارة عاجل.';
                 document.getElementById('lbl-role').innerText = 'نص الشارة (مثل: عاجل)';
                 document.getElementById('lbl-name').innerText = 'العنوان الرئيسي';
                 syncV2Content();
             } else if (this.value === 'v3') {
-                const allCards = [cardV1, cardV2, cardV3, cardV4];
-                allCards.forEach(c => { if (c) c.style.display = 'none'; });
                 cardV3.style.display = 'flex';
-
-                v1OnlyControls.forEach(el => el.style.display = 'none');
-                v2ThemeControls.style.display = 'none';
                 v3ThemeControls.style.display = 'block';
-                v4ThemeControls.style.display = 'none';
 
                 document.getElementById('mappingInfo').innerText = 'القالب الاحترافي: "المنصب" = التصنيف (تاج). "الاسم" = العنوان الرئيسي. "النص" = المحتوى.';
                 document.getElementById('lbl-role').innerText = 'التصنيف / التاج';
@@ -1551,21 +1990,33 @@
                 document.getElementById('lbl-quote').innerText = 'المحتوى النصي';
                 syncV3Content();
             } else if (this.value === 'v4') {
-                const allCards = [cardV1, cardV2, cardV3, cardV4];
-                allCards.forEach(c => { if (c) c.style.display = 'none'; });
                 cardV4.style.display = 'flex';
-
-                v1OnlyControls.forEach(el => el.style.display = 'none');
-                v2ThemeControls.style.display = 'none';
-                v3ThemeControls.style.display = 'none';
                 v4ThemeControls.style.display = 'block';
-
                 document.getElementById('v1-person-upload').style.display = 'block';
+
                 document.getElementById('mappingInfo').innerText = 'القالب الرسمي (V4): "المنصب" = الوصف الوظيفي. "الاسم" = اسم الشخصية. "النص" = الاقتباس.';
                 document.getElementById('lbl-role').innerText = 'المنصب / الوصف';
                 document.getElementById('lbl-name').innerText = 'اسم الشخصية';
                 document.getElementById('lbl-quote').innerText = 'نص الاقتباس';
                 syncV4Content();
+            } else if (this.value === 'v5') {
+                cardV5.style.display = 'flex';
+                v5ThemeControls.style.display = 'block';
+
+                document.getElementById('mappingInfo').innerText = 'القالب الزجاجي (V5): تصميم زجاجي عصري بخلفية وأضواء متوهجة.';
+                document.getElementById('lbl-role').innerText = 'المنصب / تاج الخبر';
+                document.getElementById('lbl-name').innerText = 'العنوان الرئيسي';
+                document.getElementById('lbl-quote').innerText = 'نص الخبر';
+                syncV5Content();
+            } else if (this.value === 'v6') {
+                cardV6.style.display = 'flex';
+                v6ThemeControls.style.display = 'block';
+
+                document.getElementById('mappingInfo').innerText = 'قالب الملصق الورقي (V6): تصميم إبداعي بشكل ورقة مع شريط لاصق.';
+                document.getElementById('lbl-role').innerText = 'المنصب / تاج الخبر';
+                document.getElementById('lbl-name').innerText = 'العنوان الرئيسي';
+                document.getElementById('lbl-quote').innerText = 'نص الملاحظة';
+                syncV6Content();
             }
         });
 
@@ -1574,6 +2025,8 @@
             if (templateSelector.value === 'v2') activeCardId = 'capture-card-v2';
             if (templateSelector.value === 'v3') activeCardId = 'capture-card-v3';
             if (templateSelector.value === 'v4') activeCardId = 'capture-card-v4';
+            if (templateSelector.value === 'v5') activeCardId = 'capture-card-v5';
+            if (templateSelector.value === 'v6') activeCardId = 'capture-card-v6';
 
             const elementToCapture = document.getElementById(activeCardId);
             html2canvas(elementToCapture, {
