@@ -1232,6 +1232,7 @@
                         <option value="dark_slate">الليل الغامض (Dark Slate)</option>
                         <option value="emerald">الزمرد الفاخر (Emerald Green)</option>
                         <option value="dark_red">أحمر داكن (Dark Red)</option>
+                        <option value="royalgold">ذهبي ملكي (Royal Gold)</option>
                     </select>
                 </div>
 
@@ -1388,7 +1389,7 @@
             <h3>4. رابط الموقع</h3>
             <div class="form-group">
                 <label>نص الرابط</label>
-                <input type="text" id="websiteInput" value="www.news-site.com">
+                <input type="text" id="websiteInput" value="">
             </div>
             <div class="slider-group v1-only-controls">
                 <div class="slider-row"><label>اللون</label><input type="color" id="websiteColor" value="#ffffff"></div>
@@ -1439,7 +1440,7 @@
                         <path
                             d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
                     </svg>
-                    <span id="websiteTextSpan">www.news-site.com</span>
+                    <span id="websiteTextSpan"></span>
                 </div>
             </div>
 
@@ -1475,7 +1476,7 @@
                             <path
                                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
                         </svg>
-                        <span id="v2WebsiteTextSpan">www.news-site.com</span>
+                        <span id="v2WebsiteTextSpan"></span>
                     </div>
                 </div>
             </div>
@@ -1507,7 +1508,7 @@
                             <path
                                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
                         </svg>
-                        <span id="v3WebsiteTextSpan">www.yoursite.com</span>
+                        <span id="v3WebsiteTextSpan"></span>
                     </div>
                 </div>
             </div>
@@ -1558,7 +1559,7 @@
                             <path
                                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
                         </svg>
-                        <span id="v5WebsiteTextSpan">www.website.com</span>
+                        <span id="v5WebsiteTextSpan"></span>
                     </div>
                 </div>
             </div>
@@ -1588,7 +1589,7 @@
                             <path
                                 d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
                         </svg>
-                        <span id="v6WebsiteTextSpan">www.website.com</span>
+                        <span id="v6WebsiteTextSpan"></span>
                     </div>
                 </div>
             </div>
@@ -1623,7 +1624,8 @@
             cyan_teal: { grad: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', accent: '#ffffff' },
             dark_slate: { grad: 'linear-gradient(135deg, #232526 0%, #414345 100%)', accent: '#00d2ff' },
             emerald: { grad: 'linear-gradient(135deg, #093028 0%, #237a57 100%)', accent: '#a8ff78' },
-            dark_red: { grad: 'linear-gradient(135deg, #5c0000 0%, #220000 100%)', accent: '#ffcccc' }
+            dark_red: { grad: 'linear-gradient(135deg, #5c0000 0%, #220000 100%)', accent: '#ffcccc' },
+            royalgold: { grad: 'linear-gradient(135deg, #1c1c1c 0%, #000000 100%)', accent: '#d4af37' }
         };
 
         // === ثيمات القالب الرابع (V4) ===
@@ -1800,13 +1802,34 @@
         });
 
         const websiteDisplay = document.getElementById('websiteDisplay');
+        function updateWebsiteVisibility(val) {
+            const isEmpty = val.trim() === '';
+            const displayStyle = isEmpty ? 'none' : '';
+
+            if (websiteDisplay) websiteDisplay.style.display = displayStyle;
+
+            const v2Footer = document.querySelector('#capture-card-v2 .v2-footer-area');
+            if (v2Footer) v2Footer.style.display = displayStyle;
+
+            const v3Footer = document.querySelector('#capture-card-v3 .v3-footer');
+            if (v3Footer) v3Footer.style.display = displayStyle;
+
+            const v5Footer = document.querySelector('#capture-card-v5 .v5-footer');
+            if (v5Footer) v5Footer.style.display = displayStyle;
+
+            const v6Footer = document.querySelector('#capture-card-v6 .v6-footer');
+            if (v6Footer) v6Footer.style.display = displayStyle;
+        }
+
         function updateWebsiteTransform() {
             websiteDisplay.style.transform = `translate(${document.getElementById('websiteX').value}px, ${document.getElementById('websiteY').value * -1}px) scale(${document.getElementById('websiteScale').value})`;
         }
         ['websiteX', 'websiteY', 'websiteScale'].forEach(id => document.getElementById(id).addEventListener('input', updateWebsiteTransform));
         document.getElementById('websiteColor').addEventListener('input', (e) => websiteDisplay.style.color = e.target.value);
         document.getElementById('websiteInput').addEventListener('input', (e) => {
-            document.getElementById('websiteTextSpan').innerText = e.target.value;
+            const val = e.target.value;
+            document.getElementById('websiteTextSpan').innerText = val;
+            updateWebsiteVisibility(val);
             syncAll();
         });
 
@@ -2053,6 +2076,7 @@
 
         // تشغيل أولي
         updateWebsiteTransform();
+        updateWebsiteVisibility(document.getElementById('websiteInput').value);
         updateSmoke();
         setInitialDate();
         syncAll();
