@@ -1121,6 +1121,25 @@
             opacity: calc(var(--smoke-density) + 40%) !important;
             backdrop-filter: blur(var(--smoke-blur)) !important;
         }
+
+        /* التأثير الكرتوني (ألوان مشبعة ونسيج قماشي/لوحة زيتية) */
+        .cartoon-effect {
+            filter: contrast(1.15) saturate(1.3) brightness(0.95);
+        }
+
+        .cartoon-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.18;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+            z-index: 9999;
+        }
     </style>
 </head>
 
@@ -1152,6 +1171,15 @@
                     <label for="toggleGlobalRays"
                         style="color: #1b5e20; font-size: 14px; margin: 0; cursor: pointer; font-weight: bold;">إظهار
                         الخطوط المائلة في الخلفية</label>
+                </div>
+
+                <div
+                    style="display: flex; align-items: center; gap: 8px; border-top: 1px dashed #c8e6c9; padding-top: 8px; margin-top: 5px;">
+                    <input type="checkbox" id="toggleCartoonEffect" checked
+                        style="width: 16px; height: 16px; cursor: pointer;">
+                    <label for="toggleCartoonEffect"
+                        style="color: #b71c1c; font-size: 14px; margin: 0; cursor: pointer; font-weight: bold;">🎨 تفعيل
+                        التأثير الكرتوني (ألوان ونسيج زيتي)</label>
                 </div>
             </div>
 
@@ -1594,10 +1622,6 @@
                 <div class="v5-image-container">
                     <div id="v5BgImage" class="v5-bg-img-div"></div>
                     <img src="" id="v5LogoDisplay" class="v5-logo" style="display:none;">
-                    <div class="v5-archive-label">
-                        <span id="v5RoleDisplay">صورة أرشيفية</span> <!-- Using role input for this label text -->
-                        <span class="v5-archive-icon">📸</span>
-                    </div>
                 </div>
                 <div class="v5-bottom-card">
                     <div class="v5-urgent-badge">
@@ -2041,6 +2065,21 @@
             syncV5Content();
             syncV6Content();
         }
+
+        // --- التأثير الكرتوني والنسيج القماشي ---
+        const toggleCartoonEffect = document.getElementById('toggleCartoonEffect');
+        function updateCartoonEffect() {
+            const cards = document.querySelectorAll('[id^="capture-card"]');
+            cards.forEach(card => {
+                if (toggleCartoonEffect.checked) {
+                    card.classList.add('cartoon-effect');
+                } else {
+                    card.classList.remove('cartoon-effect');
+                }
+            });
+        }
+        toggleCartoonEffect.addEventListener('change', updateCartoonEffect);
+        updateCartoonEffect(); // التفعيل الافتراضي عند التحميل
 
         function syncV2Content() {
             document.getElementById('v2RoleDisplay').innerText = document.getElementById('roleInput').value;
