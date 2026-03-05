@@ -800,7 +800,7 @@
             position: relative;
             width: 400px;
             height: 500px;
-            background-color: #ffffff;
+            background-color: var(--v5-solid-color, #bd1823);
             display: none;
             flex-direction: column;
             overflow: hidden;
@@ -1333,6 +1333,8 @@
                         <option value="green">أخضر (عاجل)</option>
                         <option value="black">أسود (حداد)</option>
                         <option value="orange">برتقالي (تنبيه)</option>
+                        <option value="yellow">أصفر (تنبيه قوي)</option>
+                        <option value="olive">أخضر زيتي (عسكري)</option>
                     </select>
                 </div>
 
@@ -1701,7 +1703,9 @@
             blue: { bg: '#0b3967' },
             green: { bg: '#0b6727' },
             black: { bg: '#1c1c1c' },
-            orange: { bg: '#e65100' }
+            orange: { bg: '#e65100' },
+            yellow: { bg: '#d4ac0d' },
+            olive: { bg: '#3e4a21' }
         };
 
         // === ثيمات القالب السادس (V6) ===
