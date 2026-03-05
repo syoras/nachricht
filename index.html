@@ -41,13 +41,9 @@
             --v4-text: #ffffff;
             --v4-ray-color: rgba(255, 193, 7, 0.15);
 
-            /* متغيرات القالب الخامس (الزجاجي المضيء - V5) */
-            --v5-bg-main: linear-gradient(135deg, #1f1c2c, #928dab);
-            --v5-blob-1: #ff007f;
-            --v5-blob-2: #00f2fe;
+            /* متغيرات القالب الخامس (الميداني الإخباري المباشر - V5) */
+            --v5-solid-color: #bd1823;
             --v5-text: #ffffff;
-            --v5-glass: rgba(255, 255, 255, 0.15);
-            --v5-border: 1px solid rgba(255, 255, 255, 0.3);
 
             /* متغيرات القالب السادس (القصاصة الورقية - V6) */
             --v6-bg-col: #f4e8d3;
@@ -798,129 +794,136 @@
         }
 
         /* =========================================
-           القالب الخامس (الزجاجي الملون - V5)
+           القالب الخامس (الميداني الإخباري المباشر - V5)
            ========================================= */
         #capture-card-v5 {
             position: relative;
             width: 400px;
             height: 500px;
-            background: var(--v5-bg-main);
+            background-color: #ffffff;
             display: none;
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .v5-blob-1,
-        .v5-blob-2 {
-            position: absolute;
-            filter: blur(50px);
-            border-radius: 50%;
-            z-index: 1;
-        }
-
-        .v5-blob-1 {
-            width: 250px;
-            height: 250px;
-            background: var(--v5-blob-1);
-            top: -50px;
-            right: -50px;
-        }
-
-        .v5-blob-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--v5-blob-2);
-            bottom: -100px;
-            left: -100px;
-        }
-
-        .v5-glass-panel {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            bottom: 20px;
-            background: var(--v5-glass);
-            border: var(--v5-border);
-            border-radius: 20px;
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            padding: 25px;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+        .v5-image-container {
+            height: 55%;
+            width: 100%;
+            position: relative;
             overflow: hidden;
+            background-color: #e0e0e0;
         }
 
-        .v5-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            z-index: 2;
+        .v5-bg-img-div {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .v5-logo {
-            max-width: 80px;
-            max-height: 40px;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            max-width: 70px;
+            max-height: 50px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+            z-index: 5;
         }
 
-        .v5-date {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--v5-text);
+        .v5-archive-label {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: black;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid #ccc;
+            z-index: 5;
         }
 
-        .v5-content {
-            flex-grow: 1;
+        .v5-archive-icon {
+            color: #bd1823;
+            font-size: 14px;
+        }
+
+        .v5-bottom-card {
+            height: 45%;
+            width: 100%;
+            background-color: var(--v5-solid-color, #bd1823);
+            position: relative;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            margin-top: -20px;
+            padding: 35px 20px 15px 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            text-align: right;
-            margin-top: 15px;
-            z-index: 2;
+            z-index: 10;
         }
 
-        .v5-badge {
-            align-self: flex-start;
-            background: rgba(255, 255, 255, 0.2);
-            border: var(--v5-border);
-            padding: 5px 14px;
-            border-radius: 15px;
-            font-size: 13px;
-            font-weight: 900;
-            color: var(--v5-text);
-            margin-bottom: 20px;
-        }
-
-        .v5-title {
+        .v5-urgent-badge {
+            position: absolute;
+            top: -25px;
+            right: 20px;
+            background-color: var(--v5-solid-color, #bd1823);
+            color: white;
             font-size: 26px;
             font-weight: 900;
-            color: var(--v5-text);
-            line-height: 1.4;
-            margin-bottom: 15px;
+            padding: 3px 20px 8px 20px;
+            border: 2px solid white;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .v5-quote {
-            font-size: 16px;
-            line-height: 1.7;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
+        .v5-urgent-dot {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 14px;
+            height: 14px;
+            background-color: #f1c40f;
+            border-radius: 3px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .v5-news-text {
+            flex-grow: 1;
+            color: var(--v5-text);
+            font-size: 21px;
+            font-weight: 900;
+            line-height: 1.6;
+            text-align: center;
+            direction: rtl;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
         }
 
         .v5-footer {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            justify-content: flex-end;
-            margin-top: 15px;
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--v5-text);
-            z-index: 2;
+            color: white;
+            font-size: 11px;
+            opacity: 0.9;
+            margin-top: 10px;
+            z-index: 20;
+            direction: ltr;
+            /* English handles usually ltr */
         }
 
         /* =========================================
@@ -1108,6 +1111,16 @@
                 font-size: 18px;
             }
         }
+
+        /* تأثير القصاصة الورقية (بديل الدخان) */
+        .paper-scrap-style {
+            background: var(--card-grad-bot) !important;
+            mask-image: none !important;
+            -webkit-mask-image: none !important;
+            clip-path: polygon(0% 10%, 2% 0%, 4% 15%, 6% 5%, 8% 20%, 10% 2%, 12% 18%, 14% 4%, 16% 22%, 18% 5%, 20% 15%, 22% 3%, 24% 20%, 26% 8%, 28% 22%, 30% 5%, 32% 18%, 34% 2%, 36% 20%, 38% 6%, 40% 15%, 42% 1%, 44% 18%, 46% 6%, 48% 22%, 50% 5%, 52% 16%, 54% 2%, 56% 20%, 58% 8%, 60% 15%, 62% 3%, 64% 22%, 66% 5%, 68% 18%, 70% 4%, 72% 20%, 74% 2%, 76% 15%, 78% 6%, 80% 22%, 82% 5%, 84% 18%, 86% 2%, 88% 20%, 90% 7%, 92% 15%, 94% 4%, 96% 22%, 98% 3%, 100% 15%, 100% 100%, 0% 100%) !important;
+            opacity: calc(var(--smoke-density) + 40%) !important;
+            backdrop-filter: blur(var(--smoke-blur)) !important;
+        }
     </style>
 </head>
 
@@ -1128,7 +1141,7 @@
                     <button class="template-btn" data-template="v2">الحديث</button>
                     <button class="template-btn" data-template="v3">✨ الاحترافي</button>
                     <button class="template-btn" data-template="v4">🌟 الرسمي</button>
-                    <button class="template-btn" data-template="v5">💎 الزجاجي</button>
+                    <button class="template-btn" data-template="v5">  الإخباري</button>
                     <button class="template-btn" data-template="v6">📌 الملصق الورقي</button>
                 </div>
 
@@ -1162,7 +1175,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label>إعدادات طبقة الدخان</label>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <label style="margin: 0;">طبقة الدخان / القصاصة</label>
+                        <button id="toggleScrapBtn" type="button" class="template-btn"
+                            style="padding: 4px 10px; font-size: 11px; border-color: #009688; color: #009688; background: transparent; border-radius: 4px; transition: all 0.3s; cursor: pointer;">
+                            استبدال بقصاصة ورقية
+                        </button>
+                    </div>
                     <div class="slider-group">
                         <div class="slider-row"><label>الارتفاع</label><input type="range" id="smokeHeight" min="0"
                                 max="100" value="70"></div>
@@ -1304,16 +1324,35 @@
             </div>
 
             <div id="v5-theme-controls" style="display: none;">
-                <h3>🎨 مظهر القالب الزجاجي المضيء (V5)</h3>
+                <h3>🎨 مظهر القالب الميداني الإخباري (V5)</h3>
                 <div class="form-group">
-                    <label>نمط المجرات (الخلفية والأضواء)</label>
+                    <label>لون البطاقة السفلي</label>
                     <select id="v5ThemeSelector">
-                        <option value="aurora" selected>أورورا (شفق قطبي سحري)</option>
-                        <option value="sunset">غروب نابض (أورانج وزهري)</option>
-                        <option value="cyber">سايبر بانك (نيون أزرق وبنفسجي)</option>
-                        <option value="deepsea">أعماق المحيط (زمردي وأزرق)</option>
-                        <option value="gold">أسود ملكي وذهبي متوهج</option>
+                        <option value="red" selected>أحمر إخباري (الجزيرة)</option>
+                        <option value="blue">أزرق داكن (رسمي)</option>
+                        <option value="green">أخضر (عاجل)</option>
+                        <option value="black">أسود (حداد)</option>
+                        <option value="orange">برتقالي (تنبيه)</option>
                     </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>صورة الخبر (الخلفية العلوية)</label>
+                    <input type="file" id="v5BgInput" accept="image/*">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-row">
+                        <label style="width: 80px;">تحريك أفقي</label>
+                        <input type="range" id="v5BgImgX" min="-200" max="200" value="0">
+                    </div>
+                    <div class="slider-row">
+                        <label style="width: 80px;">تحريك عمودي</label>
+                        <input type="range" id="v5BgImgY" min="-200" max="200" value="0">
+                    </div>
+                    <div class="slider-row">
+                        <label style="width: 80px;">تكبير الصورة</label>
+                        <input type="range" id="v5BgImgScale" min="0.5" max="3" step="0.1" value="1">
+                    </div>
                 </div>
             </div>
 
@@ -1549,29 +1588,35 @@
 
             <!-- القالب الخامس V5 HTML -->
             <div id="capture-card-v5">
-                <div class="v5-blob-1"></div>
-                <div class="v5-blob-2"></div>
-                <div class="v5-glass-panel">
-                    <div class="global-rays"></div>
-                    <div class="v5-header">
-                        <div class="v4-logo-overlay"> <!-- using same wrapping concept to adjust size -->
-                            <img src="" id="v5LogoDisplay" class="v5-logo" style="display:none;">
-                            <span id="v5LogoText" style="font-weight:bold; font-size:18px; color:white;">LOGO</span>
-                        </div>
-                        <div class="v5-date" id="v5DateDisplay">27.01.2026</div>
+                <span id="v5DateDisplay" style="display:none;"></span>
+                <div class="v5-image-container">
+                    <div id="v5BgImage" class="v5-bg-img-div"></div>
+                    <img src="" id="v5LogoDisplay" class="v5-logo" style="display:none;">
+                    <div class="v5-archive-label">
+                        <span id="v5RoleDisplay">صورة أرشيفية</span> <!-- Using role input for this label text -->
+                        <span class="v5-archive-icon">📸</span>
                     </div>
-                    <div class="v5-content">
-                        <div class="v5-badge" id="v5RoleDisplay">خبر عاجل</div>
-                        <h2 class="v5-title" id="v5NameDisplay">العنوان الرئيسي</h2>
-                        <p class="v5-quote" id="v5QuoteDisplay">تفاصيل الخبر المكتوبة هنا تظهر بشكل أنيق وجذاب يعكس
-                            احترافية التصميم الزجاجي المتطور.</p>
+                </div>
+                <div class="v5-bottom-card">
+                    <div class="v5-urgent-badge">
+                        <span id="v5NameDisplay">عاجل</span> <!-- Using name input for the badge -->
+                        <div class="v5-urgent-dot"></div>
+                    </div>
+                    <div class="v5-news-text" id="v5QuoteDisplay">
+                        إسرائيل هيوم: طائرة نتنياهو "جناح صهيون" اضطرت إلى الهبوط فور إطلاق صاروخ من اليمن
                     </div>
                     <div class="v5-footer">
-                        <svg class="web-icon" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-                        </svg>
-                        <span id="v5WebsiteTextSpan"></span>
+                        <div
+                            style="font-family: sans-serif; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                            <span style="font-size: 14px;">f</span>
+                            <span style="font-size: 13px;">X</span>
+                            <svg viewBox="0 0 24 24" fill="currentColor"
+                                style="width: 14px; height: 14px; margin-left: 2px;">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                            </svg>
+                            <span id="v5WebsiteTextSpan">ajmubasher</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1652,11 +1697,11 @@
 
         // === ثيمات القالب الخامس (V5) ===
         const themesV5 = {
-            aurora: { bg: 'linear-gradient(135deg, #1f1c2c, #928dab)', b1: '#ff007f', b2: '#00f2fe' },
-            sunset: { bg: 'linear-gradient(135deg, #ff7e5f, #feb47b)', b1: '#ff0f7b', b2: '#f89b29' },
-            cyber: { bg: 'linear-gradient(135deg, #0f0c29, #302b63)', b1: '#f107a3', b2: '#00ffff' },
-            deepsea: { bg: 'linear-gradient(135deg, #093028, #237a57)', b1: '#00d2ff', b2: '#3a7bd5' },
-            gold: { bg: 'linear-gradient(135deg, #000000, #434343)', b1: '#d4af37', b2: '#f3e5f5' }
+            red: { bg: '#bd1823' },
+            blue: { bg: '#0b3967' },
+            green: { bg: '#0b6727' },
+            black: { bg: '#1c1c1c' },
+            orange: { bg: '#e65100' }
         };
 
         // === ثيمات القالب السادس (V6) ===
@@ -1767,9 +1812,32 @@
         // تغيير ألوان ومظهر V5
         document.getElementById('v5ThemeSelector').addEventListener('change', function () {
             const theme = themesV5[this.value];
-            document.documentElement.style.setProperty('--v5-bg-main', theme.bg);
-            document.documentElement.style.setProperty('--v5-blob-1', theme.b1);
-            document.documentElement.style.setProperty('--v5-blob-2', theme.b2);
+            document.documentElement.style.setProperty('--v5-solid-color', theme.bg);
+        });
+
+        document.getElementById('v5BgInput').addEventListener('change', function () {
+            const reader = new FileReader();
+            const bgImg = document.getElementById('v5BgImage');
+            reader.onload = e => {
+                bgImg.style.backgroundImage = `url('${e.target.result}')`;
+            };
+            if (this.files[0]) {
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        function updateV5BgTransform() {
+            const x = document.getElementById('v5BgImgX').value;
+            const y = document.getElementById('v5BgImgY').value;
+            const scale = document.getElementById('v5BgImgScale').value;
+            const bgImg = document.getElementById('v5BgImage');
+            bgImg.style.backgroundPosition = `calc(50% + ${x}px) calc(50% + ${y}px)`;
+            bgImg.style.transform = `scale(${scale})`;
+        }
+
+        ['v5BgImgX', 'v5BgImgY', 'v5BgImgScale'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', updateV5BgTransform);
         });
 
         // تغيير ألوان ومظهر V6
@@ -1796,6 +1864,26 @@
         }
 
         Object.values(smokeControls).forEach(input => input.addEventListener('input', updateSmoke));
+
+        // زر استبدال الدخان بقصاصة ورقية
+        const toggleScrapBtn = document.getElementById('toggleScrapBtn');
+        const smokeOverlayElement = document.getElementById('smokeOverlay');
+        let isPaperScrap = false;
+
+        toggleScrapBtn.addEventListener('click', function () {
+            isPaperScrap = !isPaperScrap;
+            if (isPaperScrap) {
+                smokeOverlayElement.classList.add('paper-scrap-style');
+                this.textContent = 'إلغاء القصاصة (العودة للدخان)';
+                this.style.color = '#fff';
+                this.style.backgroundColor = '#009688';
+            } else {
+                smokeOverlayElement.classList.remove('paper-scrap-style');
+                this.textContent = 'استبدال بقصاصة ورقية';
+                this.style.color = '#009688';
+                this.style.backgroundColor = 'transparent';
+            }
+        });
 
         const personDisplay = document.getElementById('personDisplay');
         function updateImageTransform() {
