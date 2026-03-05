@@ -309,6 +309,11 @@
             -webkit-backdrop-filter: blur(var(--smoke-blur));
             mask-image: linear-gradient(to top, black 80%, transparent 100%);
             -webkit-mask-image: linear-gradient(to top, black 80%, transparent 100%);
+            transition: clip-path 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s ease,
+                background 0.4s ease,
+                height 0.4s ease,
+                backdrop-filter 0.4s ease;
         }
 
         .text-overlay {
@@ -1112,22 +1117,41 @@
             }
         }
 
-        /* تأثير القصاصة الورقية (بديل الدخان) */
+        /* تأثير القصاصة الورقية (بديل الدخان) - تصميم موجي احترافي */
         .paper-scrap-style {
-            background: var(--card-grad-bot) !important;
             mask-image: none !important;
             -webkit-mask-image: none !important;
-            clip-path: polygon(0% 10%, 2% 0%, 4% 15%, 6% 5%, 8% 20%, 10% 2%, 12% 18%, 14% 4%, 16% 22%, 18% 5%, 20% 15%, 22% 3%, 24% 20%, 26% 8%, 28% 22%, 30% 5%, 32% 18%, 34% 2%, 36% 20%, 38% 6%, 40% 15%, 42% 1%, 44% 18%, 46% 6%, 48% 22%, 50% 5%, 52% 16%, 54% 2%, 56% 20%, 58% 8%, 60% 15%, 62% 3%, 64% 22%, 66% 5%, 68% 18%, 70% 4%, 72% 20%, 74% 2%, 76% 15%, 78% 6%, 80% 22%, 82% 5%, 84% 18%, 86% 2%, 88% 20%, 90% 7%, 92% 15%, 94% 4%, 96% 22%, 98% 3%, 100% 15%, 100% 100%, 0% 100%) !important;
-            opacity: calc(var(--smoke-density) + 40%) !important;
-            backdrop-filter: blur(var(--smoke-blur)) !important;
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    var(--card-grad-bot) 18%) !important;
+            clip-path: polygon(0% 6%,
+                    1.5% 5%, 3% 6.5%, 4.5% 5.5%, 6% 7%,
+                    7.5% 5%, 9% 6.5%, 10.5% 5%, 12% 6%,
+                    13.5% 5.5%, 15% 7%, 16.5% 5%, 18% 6.5%,
+                    19.5% 5%, 21% 6%, 22.5% 7%, 24% 5.5%,
+                    25.5% 6.5%, 27% 5%, 28.5% 6%, 30% 7%,
+                    31.5% 5.5%, 33% 6%, 34.5% 5%, 36% 7%,
+                    37.5% 5.5%, 39% 6.5%, 40.5% 5%, 42% 6%,
+                    43.5% 7%, 45% 5.5%, 46.5% 6%, 48% 5%,
+                    49.5% 6.5%, 51% 7%, 52.5% 5.5%, 54% 6%,
+                    55.5% 5%, 57% 6.5%, 58.5% 7%, 60% 5.5%,
+                    61.5% 6%, 63% 5%, 64.5% 6.5%, 66% 7%,
+                    67.5% 5%, 69% 6%, 70.5% 5.5%, 72% 6.5%,
+                    73.5% 7%, 75% 5%, 76.5% 6%, 78% 5.5%,
+                    79.5% 6.5%, 81% 7%, 82.5% 5%, 84% 6%,
+                    85.5% 5.5%, 87% 6.5%, 88.5% 7%, 90% 5.5%,
+                    91.5% 6%, 93% 5%, 94.5% 6.5%, 96% 7%,
+                    97.5% 5.5%, 99% 6%, 100% 5.5%,
+                    100% 100%, 0% 100%) !important;
+            opacity: 1 !important;
         }
 
         /* التأثير الكرتوني (ألوان مشبعة ونسيج قماشي/لوحة زيتية) */
         .cartoon-effect {
-            filter: contrast(1.2) saturate(1.35) brightness(0.97);
+            filter: contrast(1.22) saturate(1.4) brightness(0.96);
         }
 
-        /* الطبقة الأولى: حبيبات ناعمة كثيفة */
+        /* الطبقة الأولى: حبيبات ناعمة فائقة الكثافة */
         .cartoon-effect::after {
             content: '';
             position: absolute;
@@ -1135,14 +1159,14 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.32;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='8' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='1.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.42;
             pointer-events: none;
             mix-blend-mode: multiply;
             z-index: 9999;
         }
 
-        /* الطبقة الثانية: نسيج قماشي كانفاس خشن */
+        /* الطبقة الثانية: نسيج كانفاس زيتي خشن */
         .cartoon-effect::before {
             content: '';
             position: absolute;
@@ -1150,8 +1174,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='canvas'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.15 0.15' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23canvas)'/%3E%3C/svg%3E");
-            opacity: 0.14;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.12 0.18' numOctaves='4' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+            opacity: 0.22;
             pointer-events: none;
             mix-blend-mode: overlay;
             z-index: 9998;
