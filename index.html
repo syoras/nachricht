@@ -473,6 +473,7 @@
             margin-top: 40px;
             position: relative;
             z-index: 10;
+            transform: translateY(var(--v2-content-y, 0px));
         }
 
         .v2-urgent-badge {
@@ -1204,6 +1205,16 @@
                     </div>
                 </div>
 
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>تحريك النصوص (أعلى / أسفل)</label>
+                    <div class="slider-group">
+                        <div class="slider-row">
+                            <label style="width: 80px;">عمودي</label>
+                            <input type="range" id="v2ContentY" min="-250" max="150" value="0">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group"
                     style="background: #f0f7ff; padding: 10px; border-radius: 8px; border: 1px dashed #2196f3; margin-top: 15px;">
                     <label style="color:#0d47a1;">🖼️ خلفية مخصصة (تأثير مدمج)</label>
@@ -1688,6 +1699,10 @@
         });
         document.getElementById('v2QuoteColor').addEventListener('input', function () {
             document.documentElement.style.setProperty('--v2-quote-color', this.value);
+        });
+
+        document.getElementById('v2ContentY').addEventListener('input', function () {
+            document.documentElement.style.setProperty('--v2-content-y', this.value + 'px');
         });
 
         // تغيير ألوان V3
