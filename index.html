@@ -1233,6 +1233,7 @@
                         <option value="emerald">الزمرد الفاخر (Emerald Green)</option>
                         <option value="dark_red">أحمر داكن (Dark Red)</option>
                         <option value="royalgold">ذهبي ملكي (Royal Gold)</option>
+                        <option value="yellow_pro">أصفر إبداعي (Creative Yellow)</option>
                     </select>
                 </div>
 
@@ -1625,7 +1626,8 @@
             dark_slate: { grad: 'linear-gradient(135deg, #232526 0%, #414345 100%)', accent: '#00d2ff' },
             emerald: { grad: 'linear-gradient(135deg, #093028 0%, #237a57 100%)', accent: '#a8ff78' },
             dark_red: { grad: 'linear-gradient(135deg, #5c0000 0%, #220000 100%)', accent: '#ffcccc' },
-            royalgold: { grad: 'linear-gradient(135deg, #1c1c1c 0%, #000000 100%)', accent: '#d4af37' }
+            royalgold: { grad: 'linear-gradient(135deg, #1c1c1c 0%, #000000 100%)', accent: '#d4af37' },
+            yellow_pro: { grad: 'linear-gradient(135deg, #FFD54F 0%, #FF8F00 100%)', accent: '#ffffff', title: '#000000', quote: '#111111', mainText: '#000000', secText: 'rgba(0, 0, 0, 0.8)', quoteCss: 'rgba(0, 0, 0, 0.85)' }
         };
 
         // === ثيمات القالب الرابع (V4) ===
@@ -1694,15 +1696,23 @@
             document.documentElement.style.setProperty('--v3-bg-grad', theme.grad);
             document.documentElement.style.setProperty('--v3-accent', theme.accent);
 
+            const tTitle = theme.title || '#ffffff';
+            const tQuote = theme.quote || '#e6e6e6';
+            const tMain = theme.mainText || '#ffffff';
+            const tSec = theme.secText || 'rgba(255, 255, 255, 0.9)';
+            const tQuoteCss = theme.quoteCss || 'rgba(255, 255, 255, 0.9)';
+
             // تحديث لون الشارة الافتراضي ليتطابق مع الثيم
             document.getElementById('v3BadgeColor').value = theme.accent;
             document.documentElement.style.setProperty('--v3-badge-color', theme.accent);
 
             // إعادة الألوان الرئيسية والفرعية للحالة الافتراضية للثيم
-            document.getElementById('v3TitleColor').value = '#ffffff';
-            document.getElementById('v3QuoteColor').value = '#e6e6e6';
-            document.documentElement.style.setProperty('--v3-title-color', '#ffffff');
-            document.documentElement.style.setProperty('--v3-quote-color', 'rgba(255, 255, 255, 0.9)');
+            document.getElementById('v3TitleColor').value = tTitle;
+            document.getElementById('v3QuoteColor').value = tQuote;
+            document.documentElement.style.setProperty('--v3-title-color', tTitle);
+            document.documentElement.style.setProperty('--v3-quote-color', tQuoteCss);
+            document.documentElement.style.setProperty('--v3-text-main', tMain);
+            document.documentElement.style.setProperty('--v3-text-secondary', tSec);
         });
 
         // تخصيص الألوان لـ V3
