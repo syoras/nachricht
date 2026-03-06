@@ -1410,18 +1410,10 @@
                     <label>صورة الخبر (الخلفية العلوية)</label>
                     <input type="file" id="v5BgInput" accept="image/*">
                 </div>
-                <div class="slider-group">
+                <div class="slider-group" style="margin-top: 10px;">
                     <div class="slider-row">
-                        <label style="width: 80px;">تحريك أفقي</label>
-                        <input type="range" id="v5BgImgX" min="-200" max="200" value="0">
-                    </div>
-                    <div class="slider-row">
-                        <label style="width: 80px;">تحريك عمودي</label>
-                        <input type="range" id="v5BgImgY" min="-200" max="200" value="0">
-                    </div>
-                    <div class="slider-row">
-                        <label style="width: 80px;">تكبير الصورة</label>
-                        <input type="range" id="v5BgImgScale" min="0.5" max="3" step="0.1" value="1">
+                        <label style="width: 80px;">حجم الخبر</label>
+                        <input type="range" id="v5FontSize" min="14" max="40" value="21">
                     </div>
                 </div>
             </div>
@@ -1495,8 +1487,7 @@
                         step="0.1" value="1"></div>
             </div>
 
-            <h3 class="v1-only-controls">3. تحريك الصورة الشخصية</h3>
-            <div class="slider-group v1-only-controls">
+            <div class="slider-group v1-only-controls v4-only-controls">
                 <div class="slider-row"><label>أفقي</label><input type="range" id="posX" min="-150" max="150" value="0">
                 </div>
                 <div class="slider-row"><label>عمودي</label><input type="range" id="posY" min="-100" max="100"
@@ -1908,6 +1899,10 @@
             if (el) el.addEventListener('input', updateV5BgTransform);
         });
 
+        document.getElementById('v5FontSize').addEventListener('input', function () {
+            document.getElementById('v5QuoteDisplay').style.fontSize = this.value + 'px';
+        });
+
         // تغيير ألوان ومظهر V6
         document.getElementById('v6ThemeSelector').addEventListener('change', function () {
             const theme = themesV6[this.value];
@@ -2144,11 +2139,21 @@
         }
 
         function syncV5Content() {
-            document.getElementById('v5RoleDisplay').innerText = document.getElementById('roleInput').value;
-            document.getElementById('v5NameDisplay').innerText = document.getElementById('nameInput').value;
-            document.getElementById('v5QuoteDisplay').innerText = document.getElementById('quoteInput').value;
-            document.getElementById('v5WebsiteTextSpan').innerText = document.getElementById('websiteInput').value;
-            document.getElementById('v5DateDisplay').innerText = document.getElementById('dateInput').value;
+            // القالب الخامس يستخدم nameInput للشارة و quoteInput للخبر
+            const nameVal = document.getElementById('nameInput').value;
+            const quoteVal = document.getElementById('quoteInput').value;
+            const webVal = document.getElementById('websiteInput').value;
+            const dateVal = document.getElementById('dateInput').value;
+
+            const nameDisp = document.getElementById('v5NameDisplay');
+            const quoteDisp = document.getElementById('v5QuoteDisplay');
+            const webDisp = document.getElementById('v5WebsiteTextSpan');
+            const dateDisp = document.getElementById('v5DateDisplay');
+
+            if (nameDisp) nameDisp.innerText = nameVal;
+            if (quoteDisp) quoteDisp.innerText = quoteVal;
+            if (webDisp) webDisp.innerText = webVal;
+            if (dateDisp) dateDisp.innerText = dateVal;
         }
 
         function syncV6Content() {
@@ -2222,10 +2227,13 @@
                 cardV5.style.display = 'flex';
                 v5ThemeControls.style.display = 'block';
 
-                document.getElementById('mappingInfo').innerText = 'القالب الزجاجي (V5): تصميم زجاجي عصري بخلفية وأضواء متوهجة.';
-                document.getElementById('lbl-role').innerText = 'المنصب / تاج الخبر';
-                document.getElementById('lbl-name').innerText = 'العنوان الرئيسي';
-                document.getElementById('lbl-quote').innerText = 'نص الخبر';
+                // إخفاء الحقول غير الضرورية لوضع V5
+                document.getElementById('v1-person-upload').style.display = 'none';
+                document.querySelector('.form-group:has(#roleInput)').style.display = 'none';
+
+                document.getElementById('mappingInfo').innerText = 'القالب الإخباري (V5): "الاسم" = نص الشارة (مثل: عاجل). "النص" = محتوى الخبر.';
+                document.getElementById('lbl-name').innerText = 'نص الشارة (عاجل)';
+                document.getElementById('lbl-quote').innerText = 'محتوى الخبر الإخباري';
                 syncV5Content();
             } else if (this.value === 'v6') {
                 cardV6.style.display = 'flex';
