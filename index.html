@@ -1220,6 +1220,14 @@
                         style="color: #b71c1c; font-size: 14px; margin: 0; cursor: pointer; font-weight: bold;">🎨 تفعيل
                         التأثير الكرتوني (ألوان ونسيج زيتي)</label>
                 </div>
+
+                <div
+                    style="display: flex; align-items: center; gap: 10px; border-top: 1px solid #c8e6c9; padding-top: 10px; margin-top: 5px;">
+                    <label style="color: #2e7d32; font-size: 14px; font-weight: bold;">🎨 لون الخلفية المخصص:</label>
+                    <input type="color" id="globalBgColor" value="#3e4a21"
+                        style="width: 40px; height: 30px; cursor: pointer; border: none; background: none;">
+                    <span style="font-size: 11px; color: #666;">(يؤثر على جميع الأوضاع)</span>
+                </div>
             </div>
 
             <div id="mappingInfo" class="alert-info">
@@ -2114,6 +2122,47 @@
         }
         toggleCartoonEffect.addEventListener('change', updateCartoonEffect);
         updateCartoonEffect(); // التفعيل الافتراضي عند التحميل
+
+        // --- التحكم العالمي بلون الخلفية لجميع الأوضاع ---
+        document.getElementById('globalBgColor').addEventListener('input', function () {
+            const color = this.value;
+            const template = document.getElementById('templateSelector').value;
+
+            // تحديث متغيرات CSS بناءً على القالب النشط
+            if (template === 'v1') {
+                document.documentElement.style.setProperty('--card-grad-top', color);
+                // تعبئة اللون الثاني بدرجة أغمق قليلاً للحفاظ على التدرج الجمالي
+                document.documentElement.style.setProperty('--card-grad-bot', adjustColor(color, -30));
+            } else if (template === 'v2') {
+                document.documentElement.style.setProperty('--new-green-bg-top', color);
+                document.documentElement.style.setProperty('--new-green-bg-bot', adjustColor(color, -40));
+            } else if (template === 'v3') {
+                document.documentElement.style.setProperty('--v3-bg-grad', `linear-gradient(135deg, ${color} 0%, ${adjustColor(color, -40)} 100%)`);
+            } else if (template === 'v4') {
+                document.documentElement.style.setProperty('--v4-bg-color', color);
+            } else if (template === 'v5') {
+                document.documentElement.style.setProperty('--v5-solid-color', color);
+            } else if (template === 'v6') {
+                document.documentElement.style.setProperty('--v6-bg-col', color);
+            }
+        });
+
+        // دالة مساعدة لتغميق أو تفتيح الألوان (للحفاظ على التدرجات)
+        function adjustColor(hex, amount) {
+            let usePound = false;
+            if (hex[0] == "#") {
+                hex = hex.slice(1);
+                usePound = true;
+            }
+            let num = parseInt(hex, 16);
+            let r = (num >> 16) + amount;
+            if (r > 255) r = 255; else if (r < 0) r = 0;
+            let b = ((num >> 8) & 0x00FF) + amount;
+            if (b > 255) b = 255; else if (b < 0) b = 0;
+            let g = (num & 0x0000FF) + amount;
+            if (g > 255) g = 255; else if (g < 0) g = 0;
+            return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16).padStart(6, '0');
+        }
 
         function syncV2Content() {
             document.getElementById('v2RoleDisplay').innerText = document.getElementById('roleInput').value;
